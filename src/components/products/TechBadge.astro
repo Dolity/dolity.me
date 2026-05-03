@@ -1,0 +1,46 @@
+---
+interface Props {
+	label: string;
+	slug?: string;
+}
+
+const { label, slug } = Astro.props;
+const iconUrl = slug ? `https://cdn.simpleicons.org/${encodeURIComponent(slug)}` : null;
+
+/** Masked sprite: fill follows theme `base-content` instead of fixed brand SVG colors. */
+const iconMaskStyle = iconUrl
+	? [
+			`mask-image: url("${iconUrl}")`,
+			`-webkit-mask-image: url("${iconUrl}")`,
+			'mask-size: contain',
+			'-webkit-mask-size: contain',
+			'mask-repeat: no-repeat',
+			'-webkit-mask-repeat: no-repeat',
+			'mask-position: center',
+			'-webkit-mask-position: center',
+		].join('; ')
+	: '';
+---
+
+{
+	iconUrl ? (
+		<span
+			class="inline-flex items-center gap-1.5 rounded-full border border-base-300/80 bg-base-100/90 px-2.5 py-1 text-xs font-medium text-base-content/90 shadow-sm"
+			title={label}
+		>
+			<span
+				class="inline-block h-[18px] w-[18px] shrink-0 bg-base-content opacity-90"
+				style={iconMaskStyle}
+				aria-hidden="true"
+			/>
+			<span>{label}</span>
+		</span>
+	) : (
+		<span
+			class="inline-flex items-center rounded-full border border-base-300/80 bg-base-200/60 px-2.5 py-1 text-xs font-medium text-base-content/90"
+			title={label}
+		>
+			{label}
+		</span>
+	)
+}

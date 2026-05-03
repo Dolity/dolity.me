@@ -1,0 +1,94 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import SeoHead from './SeoHead.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import '../../styles/global.css';
+import { THEME_STORAGE_KEY } from '../../constants/theme';
+
+interface Props {
+	title: string;
+	description: string;
+	seoPath?: string;
+}
+
+const { title, description, seoPath = '' } = Astro.props;
+const lang = Astro.currentLocale === 'en' ? 'en' : 'th';
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<SeoHead title={title} description={description} seoPath={seoPath} />
+		<ClientRouter />
+		<script is:inline define:vars={{ THEME_STORAGE_KEY }}>
+			(() => {
+				let stored = null;
+				try {
+					stored = localStorage.getItem(THEME_STORAGE_KEY);
+				} catch (_) {}
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const theme =
+					stored === 'pastel' || stored === 'forest' ? stored : prefersDark ? 'forest' : 'pastel';
+				document.documentElement.setAttribute('data-theme', theme);
+			})();
+		</script>
+		<script>
+			import { THEME_STORAGE_KEY } from '../../constants/theme';
+
+			function applyThemeFromUserPreference() {
+				let stored = null;
+				try {
+					stored = localStorage.getItem(THEME_STORAGE_KEY);
+				} catch {
+					/* ignore */
+				}
+				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				const theme =
+					stored === 'pastel' || stored === 'forest' ? stored : prefersDark ? 'forest' : 'pastel';
+				document.documentElement.setAttribute('data-theme', theme);
+			}
+
+			function syncThemeToggleLabels() {
+				const moon = document.getElementById('dolity-theme-label-moon');
+				const sun = document.getElementById('dolity-theme-label-sun');
+				if (!moon || !sun) return;
+				const isDark = document.documentElement.getAttribute('data-theme') === 'forest';
+				moon.classList.toggle('hidden', !isDark);
+				sun.classList.toggle('hidden', isDark);
+			}
+
+			function onThemeToggleClick(ev: MouseEvent) {
+				const el = ev.target;
+				if (!(el instanceof Element)) return;
+				const btn = el.closest('#dolity-theme-toggle');
+				if (!btn) return;
+				ev.preventDefault();
+				const html = document.documentElement;
+				const next = html.getAttribute('data-theme') === 'forest' ? 'pastel' : 'forest';
+				html.setAttribute('data-theme', next);
+				try {
+					localStorage.setItem(THEME_STORAGE_KEY, next);
+				} catch {
+					/* ignore */
+				}
+				syncThemeToggleLabels();
+			}
+
+			document.addEventListener('click', onThemeToggleClick);
+			document.addEventListener('astro:page-load', () => {
+				applyThemeFromUserPreference();
+				syncThemeToggleLabels();
+			});
+		</script>
+	</head>
+	<body class="font-sans flex min-h-screen flex-col bg-base-100 text-base-content">
+		<SiteHeader />
+		<main class="flex-1">
+			<div class="container mx-auto px-4 py-10">
+				<slot />
+			</div>
+		</main>
+		<SiteFooter />
+	</body>
+</html>

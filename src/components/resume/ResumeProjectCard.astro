@@ -1,0 +1,108 @@
+---
+import type { Locale, ProductCatalogItem } from '../../data/products-catalog';
+import { hrefForLocale, t } from '../../i18n';
+import TechStackRow from '../products/TechStackRow.astro';
+
+interface Props {
+	item: ProductCatalogItem;
+	loc: Locale;
+	stripe: number;
+}
+
+const { item, loc, stripe } = Astro.props;
+const h = (s: string) => hrefForLocale(loc, s);
+
+const isDolity = item.id === 'dolity';
+const detailHref = item.detailPath ? h(item.detailPath) : null;
+const prodUrl = item.prodUrl;
+
+let linkLabel = '';
+if (prodUrl) {
+	try {
+		linkLabel = new URL(prodUrl).hostname.replace(/^www\./, '');
+	} catch {
+		linkLabel = prodUrl;
+	}
+}
+
+const isPrimary = stripe % 2 === 0;
+---
+
+<li
+	class:list={[
+		'group relative overflow-hidden rounded-3xl p-6 shadow-lg transition duration-300 lg:p-8',
+		isPrimary
+			? 'border-2 border-primary/20 bg-base-200 hover:border-primary/40 hover:shadow-xl'
+			: 'border border-base-300/80 bg-gradient-to-b from-base-200 to-base-300/35 hover:border-secondary/40 hover:shadow-xl',
+	]}
+>
+	<div
+		class:list={[
+			'pointer-events-none absolute -right-12 top-8 h-44 w-44 rounded-full blur-2xl transition',
+			isPrimary ? 'bg-primary/10 group-hover:bg-primary/15' : 'bg-secondary/12 group-hover:bg-secondary/18',
+		]}
+		aria-hidden="true"
+	>
+	</div>
+	<div class="relative space-y-3">
+		<h3 class="flex flex-wrap items-center gap-2 text-xl font-bold">
+			{item.title[loc]}
+			<span class="badge badge-ghost badge-sm font-normal">{item.period[loc]}</span>
+			<span class="badge badge-outline badge-sm font-normal">{item.badge[loc]}</span>
+		</h3>
+
+		<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+			{
+				isDolity ? (
+					<>
+						<a class="link link-primary font-medium" href={prodUrl ?? h('')}>
+							{item.title[loc]}
+						</a>
+						<a class="link link-secondary text-sm font-medium" href={h('products')}>
+							{t(loc, 'products.viewInCatalog')}
+						</a>
+					</>
+				) : (
+					<>
+						{prodUrl ? (
+							<a
+								class="link link-primary font-medium break-all"
+								href={prodUrl}
+								rel="noopener noreferrer"
+								target="_blank"
+							>
+								{linkLabel}
+								<span class="ml-1 opacity-70">↗</span>
+							</a>
+						) : null}
+						{detailHref ? (
+							<a class="link link-secondary text-sm font-medium" href={detailHref}>
+								{t(loc, 'products.catalog.detailPage')}
+							</a>
+						) : null}
+					</>
+				)
+			}
+		</div>
+
+		<p class="text-base leading-relaxed opacity-95">{item.summary[loc]}</p>
+
+		<div>
+			<p class="mb-2 text-sm font-bold uppercase tracking-wide text-primary opacity-95">
+				{t(loc, 'products.catalog.highlightsHeading')}
+			</p>
+			<ul class="list-inside list-disc space-y-1 text-base leading-relaxed opacity-95">
+				{item.highlights[loc].map((line) => (
+					<li>{line}</li>
+				))}
+			</ul>
+		</div>
+
+		<div>
+			<p class="mb-2 text-sm font-bold uppercase tracking-wide text-primary opacity-95">
+				{t(loc, 'products.catalog.techHeading')}
+			</p>
+			<TechStackRow items={item.tech} />
+		</div>
+	</div>
+</li>

@@ -1,0 +1,14 @@
+---
+import type { TechBadge as TechBadgeT } from '../../data/products-catalog';
+import TechBadge from './TechBadge.astro';
+
+interface Props {
+	items: TechBadgeT[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="flex flex-wrap gap-2">
+	{items.map((t) => <TechBadge label={t.label} slug={t.slug} />)}
+</div>

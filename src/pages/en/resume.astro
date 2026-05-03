@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import ResumeHeader from '../../components/resume/ResumeHeader.astro';
+import ResumeBody from '../../components/resume/ResumeBody.astro';
+import { t } from '../../i18n';
+
+export const prerender = true;
+
+const loc = 'en';
+const title = `${t(loc, 'resume.title')} | ${t(loc, 'site.name')}`;
+const description = t(loc, 'resume.lead');
+---
+
+<BaseLayout title={title} description={description} seoPath="resume">
+	<div class="w-full space-y-12 lg:space-y-16">
+		<ResumeHeader />
+		<ResumeBody />
+	</div>
+</BaseLayout>

@@ -1,0 +1,245 @@
+---
+import { hrefForLocale, t } from '../../i18n';
+
+const raw = Astro.currentLocale ?? 'th';
+const loc = raw === 'en' ? 'en' : 'th';
+const h = (s: string) => hrefForLocale(loc, s);
+
+const mailSubject = loc === 'en' ? 'Support Dolity' : 'สนับสนุน Dolity';
+const mailtoHref = `mailto:dolity.code@gmail.com?subject=${encodeURIComponent(mailSubject)}`;
+---
+
+<div class="space-y-12 pb-6 lg:space-y-16">
+	<section class="relative isolate overflow-hidden rounded-3xl border border-base-300/70 bg-base-200/30 shadow-2xl shadow-base-300/40">
+		<div
+			class="pointer-events-none absolute inset-0 opacity-[0.2]"
+			aria-hidden="true"
+			style="background-image: linear-gradient(to right, oklch(0 0 0 / 0.06) 1px, transparent 1px), linear-gradient(to bottom, oklch(0 0 0 / 0.06) 1px, transparent 1px); background-size: 28px 28px;"
+		>
+		</div>
+		<div
+			class="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-primary/25 blur-3xl"
+			aria-hidden="true"
+		>
+		</div>
+		<div
+			class="pointer-events-none absolute -bottom-28 -left-24 h-80 w-80 rounded-full bg-secondary/30 blur-3xl"
+			aria-hidden="true"
+		>
+		</div>
+
+		<div class="relative px-5 py-12 sm:px-10 sm:py-16 lg:px-14">
+			<p class="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
+				{t(loc, 'support.pageEyebrow')}
+			</p>
+			<h1 class="max-w-4xl font-bold tracking-tight">
+				<span class="block text-xl font-semibold text-base-content/80 sm:text-2xl">
+					{t(loc, 'support.heroPrefix')}
+				</span>
+				<span
+					class="mt-2 block bg-gradient-to-br from-primary via-secondary to-primary bg-clip-text text-4xl text-transparent sm:text-5xl lg:text-6xl"
+				>
+					{t(loc, 'site.name')}
+				</span>
+			</h1>
+			<p class="mt-6 max-w-2xl text-lg leading-relaxed text-base-content/85 sm:text-xl">
+				{t(loc, 'support.lead')}
+			</p>
+
+			<div class="mt-10 flex flex-col gap-4">
+				<div class="flex flex-wrap justify-center gap-2 sm:justify-start">
+					<a class="btn btn-primary px-8 shadow-lg shadow-primary/25" href={h('products')}>
+						{t(loc, 'nav.products')}
+					</a>
+					<a class="btn btn-outline btn-primary border-2" href={h('about')}>
+						{t(loc, 'nav.about')}
+					</a>
+				</div>
+				<div class="flex flex-wrap justify-center gap-2 sm:justify-start">
+					<a class="btn btn-ghost border border-base-300/80 bg-base-100/70" href={h('')}>
+						{t(loc, 'nav.home')}
+					</a>
+					<a class="btn btn-ghost border border-base-300/80 bg-base-100/70" href={h('resume')}>
+						{t(loc, 'nav.resume')}
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div
+			class="relative border-t border-base-300/60 bg-base-100/60 px-5 py-8 backdrop-blur-md sm:px-10 lg:px-14"
+		>
+			<p class="mx-auto max-w-3xl text-lg leading-relaxed text-base-content/85 sm:text-xl">
+				{t(loc, 'support.intro')}
+			</p>
+		</div>
+	</section>
+
+	<section class="py-2" aria-labelledby="support-ways-heading">
+		<div class="mb-10 max-w-3xl">
+			<p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">
+				{t(loc, 'support.sectionEyebrow')}
+			</p>
+			<h2 id="support-ways-heading" class="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+				{t(loc, 'support.sectionHeading')}
+			</h2>
+			<p class="mt-4 text-lg leading-relaxed opacity-90">{t(loc, 'support.sectionLead')}</p>
+		</div>
+
+		<div class="grid gap-6 lg:grid-cols-12 lg:gap-8">
+			<article
+				class="group relative flex flex-col overflow-hidden rounded-3xl border-2 border-primary/20 bg-base-200 p-6 shadow-lg transition duration-300 hover:border-primary/40 hover:shadow-xl lg:col-span-7 lg:p-8"
+			>
+				<div
+					class="pointer-events-none absolute -right-16 top-0 h-48 w-48 rounded-full bg-primary/10 blur-2xl transition group-hover:bg-primary/15"
+					aria-hidden="true"
+				>
+				</div>
+				<div class="relative flex flex-1 flex-col gap-6">
+					<div class="flex flex-1 flex-col gap-4 sm:flex-row sm:items-start">
+						<span
+							class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary ring-1 ring-primary/25"
+							aria-hidden="true"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-8 w-8"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"
+								/>
+							</svg>
+						</span>
+						<div class="min-w-0 flex-1">
+							<h3 class="text-2xl font-bold">{t(loc, 'support.bmc.title')}</h3>
+							<p class="mt-3 max-w-prose leading-relaxed opacity-90">{t(loc, 'support.bmc.desc')}</p>
+						</div>
+					</div>
+					<a
+						class="relative block overflow-hidden rounded-2xl border border-base-300/80 bg-base-100/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+						href="https://buymeacoffee.com/dolity"
+						rel="noopener noreferrer"
+						target="_blank"
+						aria-label={t(loc, 'support.bmc.cta')}
+					>
+						<img
+							src="/qr-bmc.png"
+							alt={t(loc, 'support.bmc.imgAlt')}
+							class="mx-auto max-h-64 w-full max-w-[280px] object-contain"
+							width="280"
+							height="280"
+							loading="lazy"
+							decoding="async"
+						/>
+					</a>
+					<div class="relative flex flex-wrap gap-2">
+						<a
+							class="btn btn-primary btn-sm shadow-md"
+							href="https://buymeacoffee.com/dolity"
+							rel="noopener noreferrer"
+							target="_blank"
+						>
+							{t(loc, 'support.bmc.cta')}
+						</a>
+					</div>
+				</div>
+			</article>
+
+			<article
+				class="group relative flex flex-col overflow-hidden rounded-3xl border border-base-300/80 bg-gradient-to-b from-base-200 to-base-300/40 p-6 shadow-md transition duration-300 hover:border-secondary/40 hover:shadow-xl lg:col-span-5 lg:p-8"
+			>
+				<div
+					class="pointer-events-none absolute -left-12 bottom-0 h-40 w-40 rounded-full bg-secondary/15 blur-2xl group-hover:bg-secondary/20"
+					aria-hidden="true"
+				>
+				</div>
+				<div class="relative flex flex-1 flex-col gap-6">
+					<div class="flex flex-1 flex-col gap-4 sm:flex-row sm:items-start">
+						<span
+							class="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-secondary/20 text-secondary ring-1 ring-secondary/30"
+							aria-hidden="true"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								class="h-8 w-8"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke-width="1.5"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+								/>
+							</svg>
+						</span>
+						<div class="min-w-0 flex-1">
+							<h3 class="text-2xl font-bold">{t(loc, 'support.detail.title')}</h3>
+							<p class="mt-3 max-w-prose leading-relaxed opacity-90">{t(loc, 'support.detail.intro')}</p>
+							<p class="mt-3 max-w-prose leading-relaxed opacity-90">{t(loc, 'support.detail.body')}</p>
+						</div>
+					</div>
+					<div class="relative rounded-2xl border border-base-300/80 bg-base-100/70 p-5 backdrop-blur-sm">
+						<h4 class="text-base font-bold text-base-content">{t(loc, 'support.email.title')}</h4>
+						<p class="mt-2 text-sm leading-relaxed opacity-90">{t(loc, 'support.email.desc')}</p>
+						<div class="mt-4">
+							<a class="btn btn-primary btn-sm shadow-md" href={mailtoHref}>
+								{t(loc, 'support.email.cta')}
+							</a>
+						</div>
+					</div>
+				</div>
+			</article>
+		</div>
+
+		<div
+			class="relative mt-14 overflow-hidden rounded-3xl border border-base-300/60 bg-gradient-to-br from-primary via-primary/90 to-secondary text-primary-content shadow-xl"
+		>
+			<div
+				class="pointer-events-none absolute inset-0 opacity-25"
+				aria-hidden="true"
+				style="background-image: radial-gradient(circle at 20% 20%, white 0, transparent 50%), radial-gradient(circle at 80% 80%, white 0, transparent 45%);"
+			>
+			</div>
+			<div class="relative flex flex-col gap-6 px-6 py-10 sm:px-10 lg:flex-row lg:items-center lg:justify-between">
+				<div class="max-w-xl">
+					<p class="text-xl font-bold leading-snug sm:text-2xl">{t(loc, 'support.ctaBand.title')}</p>
+					<p class="mt-3 text-sm leading-relaxed opacity-90 sm:text-base">{t(loc, 'support.ctaBand.sub')}</p>
+				</div>
+				<nav
+					class="flex shrink-0 flex-col gap-3 sm:flex-row sm:flex-wrap"
+					aria-label={t(loc, 'support.ctaNavLabel')}
+				>
+					<a class="btn border-0 bg-base-100 text-base-content hover:bg-base-200" href={h('')}>
+						{t(loc, 'nav.home')}
+					</a>
+					<a
+						class="btn btn-outline border-2 border-primary-content/50 text-primary-content hover:border-primary-content hover:bg-primary-content/10"
+						href={h('products')}
+					>
+						{t(loc, 'nav.products')}
+					</a>
+					<a
+						class="btn btn-outline border-2 border-primary-content/50 text-primary-content hover:border-primary-content hover:bg-primary-content/10"
+						href={h('resume')}
+					>
+						{t(loc, 'nav.resume')}
+					</a>
+					<a
+						class="btn btn-outline border-2 border-primary-content/50 text-primary-content hover:border-primary-content hover:bg-primary-content/10"
+						href={h('about')}
+					>
+						{t(loc, 'nav.about')}
+					</a>
+				</nav>
+			</div>
+		</div>
+	</section>
+</div>

@@ -1,0 +1,18 @@
+---
+import ProductsCatalog from './ProductsCatalog.astro';
+import ProductsCtaBand from './ProductsCtaBand.astro';
+import ProductsHero from './ProductsHero.astro';
+import type { Locale } from '../../data/products-catalog';
+
+interface Props {
+	loc: Locale;
+}
+
+const { loc } = Astro.props;
+---
+
+<div class="space-y-12 lg:space-y-16">
+	<ProductsHero />
+	<ProductsCatalog loc={loc} />
+	<ProductsCtaBand />
+</div>

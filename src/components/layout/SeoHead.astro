@@ -1,0 +1,80 @@
+---
+import { getAbsoluteLocaleUrl } from 'astro:i18n';
+import {
+	APPLE_TOUCH_ICON,
+	FAVICON_ICO,
+	FAVICON_PNG_96,
+	FAVICON_SVG,
+	SITE_BRAND_SRC,
+	SITE_WEB_MANIFEST,
+} from '../../constants/site-assets';
+
+interface Props {
+	title: string;
+	description: string;
+	/** Path without locale prefix e.g. "", "about", "products/billing" */
+	seoPath?: string;
+}
+
+const { title, description, seoPath = '' } = Astro.props;
+const pathArg = seoPath || undefined;
+
+const ogImage = new URL(SITE_BRAND_SRC, Astro.site ?? Astro.url).href;
+
+const localeCodes = ['th', 'en'] as const;
+const alternates = localeCodes.map((loc) => ({
+	href: getAbsoluteLocaleUrl(loc, pathArg),
+	hreflang: loc,
+}));
+
+const canonical = getAbsoluteLocaleUrl(Astro.currentLocale ?? 'th', pathArg);
+
+const personJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'Person',
+	name: 'Dolity',
+	url: Astro.site?.href ?? 'https://dolity.me',
+	sameAs: ['https://shorturl.dolity.me', 'https://bill.dolity.me'],
+	knowsLanguage: ['th', 'en'],
+};
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href={FAVICON_ICO} sizes="any" />
+<link rel="icon" type="image/png" sizes="96x96" href={FAVICON_PNG_96} />
+<link rel="icon" type="image/svg+xml" href={FAVICON_SVG} />
+<link rel="apple-touch-icon" href={APPLE_TOUCH_ICON} />
+<link rel="manifest" href={SITE_WEB_MANIFEST} />
+<meta name="generator" content={Astro.generator} />
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+{alternates.map((a) => (
+	<link rel="alternate" hreflang={a.hreflang} href={a.href} />
+))}
+<link
+	rel="alternate"
+	hreflang="x-default"
+	href={getAbsoluteLocaleUrl('th', pathArg)}
+/>
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={Astro.currentLocale === 'en' ? 'en_US' : 'th_TH'} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<script
+	type="application/ld+json"
+	is:inline
+	set:html={JSON.stringify(personJsonLd)}
+/>

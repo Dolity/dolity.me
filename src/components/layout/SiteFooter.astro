@@ -1,0 +1,54 @@
+---
+import BrandLockup from './BrandLockup.astro';
+import { hrefForLocale, t } from '../../i18n';
+
+const raw = Astro.currentLocale ?? 'th';
+const loc = raw === 'en' ? 'en' : 'th';
+const h = (s: string) => hrefForLocale(loc, s);
+---
+
+<footer class="border-t border-base-300 bg-base-200 py-10">
+	<div class="container mx-auto flex flex-col gap-6 px-4 sm:flex-row sm:justify-between">
+		<div class="flex max-w-md flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
+			<div class="flex flex-col gap-3">
+				<BrandLockup variant="footer" />
+				<p class="text-sm opacity-80">{t(loc, 'footer.tagline')}</p>
+			</div>
+		</div>
+		<div>
+			<p class="mb-2 text-sm font-medium">{t(loc, 'footer.products')}</p>
+			<ul class="flex flex-col gap-2 text-sm">
+				<li>
+					<a class="link link-hover" href={h('products/url-shortener')}>
+						{t(loc, 'footer.shorturl')}
+					</a>
+					<span class="mx-1 opacity-50">·</span>
+					<a
+						class="link link-primary"
+						href="https://shorturl.dolity.me/"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						shorturl.dolity.me
+					</a>
+				</li>
+				<li>
+					<a class="link link-hover" href={h('products/billing')}>
+						{t(loc, 'footer.bill')}
+					</a>
+					<span class="mx-1 opacity-50">·</span>
+					<a
+						class="link link-primary"
+						href="https://bill.dolity.me/"
+						rel="noopener noreferrer"
+						target="_blank"
+					>
+						bill.dolity.me
+					</a>
+				</li>
+			</ul>
+			<p class="mt-4 mb-2 text-sm font-medium">{t(loc, 'footer.support')}</p>
+			<a class="link link-hover text-sm" href={h('support')}>{t(loc, 'support.title')}</a>
+		</div>
+	</div>
+</footer>

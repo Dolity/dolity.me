@@ -1,0 +1,167 @@
+---
+import {
+	hrefForLocale,
+	navSectionFromSegment,
+	otherLocale,
+	segmentFromPathname,
+	type NavSection,
+	t,
+} from '../../i18n';
+import BrandLockup from './BrandLockup.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+const raw = Astro.currentLocale ?? 'th';
+const loc = raw === 'en' ? 'en' : 'th';
+const segment = segmentFromPathname(Astro.url.pathname);
+const activeNav = navSectionFromSegment(segment);
+const next = otherLocale(loc);
+const nextHref = hrefForLocale(next, segment);
+const nextLabel = t(loc, 'nav.langSwitch');
+
+const h = (s: string) => hrefForLocale(loc, s);
+
+function desktopNavClass(key: NavSection): string {
+	const base = 'btn btn-ghost btn-sm';
+	if (activeNav !== key) return base;
+	return `${base} bg-primary/15 font-semibold text-primary ring-1 ring-primary/30 shadow-sm shadow-primary/10`;
+}
+
+function mobileLinkClass(key: NavSection): string {
+	if (activeNav !== key) return '';
+	return 'bg-primary/15 font-semibold text-primary';
+}
+---
+
+<header class="navbar sticky top-0 z-50 border-b border-base-300 bg-base-200/80 backdrop-blur">
+	<div class="flex-1">
+		<BrandLockup variant="header" />
+	</div>
+	<nav class="hidden flex-none gap-1 sm:flex" aria-label="Main">
+		<a
+			class={desktopNavClass('home')}
+			href={h('')}
+			aria-current={activeNav === 'home' ? 'page' : undefined}
+		>
+			{t(loc, 'nav.home')}
+		</a>
+		<a
+			class={desktopNavClass('about')}
+			href={h('about')}
+			aria-current={activeNav === 'about' ? 'page' : undefined}
+		>
+			{t(loc, 'nav.about')}
+		</a>
+		<a
+			class={desktopNavClass('resume')}
+			href={h('resume')}
+			aria-current={activeNav === 'resume' ? 'page' : undefined}
+		>
+			{t(loc, 'nav.resume')}
+		</a>
+		<a
+			class={desktopNavClass('products')}
+			href={h('products')}
+			aria-current={activeNav === 'products' ? 'page' : undefined}
+		>
+			{t(loc, 'nav.products')}
+		</a>
+		<a
+			class={desktopNavClass('support')}
+			href={h('support')}
+			aria-current={activeNav === 'support' ? 'page' : undefined}
+		>
+			{t(loc, 'nav.support')}
+		</a>
+	</nav>
+	<div class="flex flex-none items-center gap-2">
+		<div class="dropdown dropdown-end sm:hidden">
+			<div
+				tabindex="0"
+				role="button"
+				class="btn btn-ghost btn-circle"
+				aria-label={t(loc, 'nav.menu')}
+				aria-haspopup="true"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="h-5 w-5"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					aria-hidden="true"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M4 6h16M4 12h16M4 18h16"></path>
+				</svg>
+			</div>
+			<ul
+				tabindex="0"
+				class="dropdown-content menu z-[200] mt-1 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg"
+				aria-label="Main"
+			>
+				<li>
+					<a
+						class={mobileLinkClass('home')}
+						href={h('')}
+						aria-current={activeNav === 'home' ? 'page' : undefined}
+					>
+						{t(loc, 'nav.home')}
+					</a>
+				</li>
+				<li>
+					<a
+						class={mobileLinkClass('about')}
+						href={h('about')}
+						aria-current={activeNav === 'about' ? 'page' : undefined}
+					>
+						{t(loc, 'nav.about')}
+					</a>
+				</li>
+				<li>
+					<a
+						class={mobileLinkClass('resume')}
+						href={h('resume')}
+						aria-current={activeNav === 'resume' ? 'page' : undefined}
+					>
+						{t(loc, 'nav.resume')}
+					</a>
+				</li>
+				<li>
+					<a
+						class={mobileLinkClass('products')}
+						href={h('products')}
+						aria-current={activeNav === 'products' ? 'page' : undefined}
+					>
+						{t(loc, 'nav.products')}
+					</a>
+				</li>
+				<li>
+					<a
+						class={mobileLinkClass('support')}
+						href={h('support')}
+						aria-current={activeNav === 'support' ? 'page' : undefined}
+					>
+						{t(loc, 'nav.support')}
+					</a>
+				</li>
+			</ul>
+		</div>
+		<a
+			class="btn btn-ghost btn-sm inline-flex h-9 min-h-9 items-center justify-center gap-2 border-2 border-primary/35 bg-base-100/50 px-3 hover:border-primary/50 hover:bg-base-300/25"
+			href={nextHref}
+			hreflang={next}
+			lang={next}
+			title={nextLabel}
+			aria-label={nextLabel}
+		>
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 0c2.5 2 5 7.5 5 10s-2.5 8-5 8-5-5.5-5-8 2.5-8 5-8zm0 0v20m10-10H2" />
+			</svg>
+			{next.toUpperCase()}
+		</a>
+		<ThemeToggle />
+	</div>
+</header>

@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import { hrefForLocale, t } from '../../i18n';
+
+export const prerender = true;
+
+const loc = 'th';
+const title = `${t(loc, 'products.billing.title')} | ${t(loc, 'site.name')}`;
+const description = t(loc, 'products.billing.desc');
+---
+
+<BaseLayout title={title} description={description} seoPath="products/billing">
+	<article class="max-w-3xl">
+		<h1 class="text-4xl font-bold">{t(loc, 'products.billing.title')}</h1>
+		<p class="mt-4 text-lg leading-relaxed opacity-90">{t(loc, 'products.billing.desc')}</p>
+		<p class="mt-6">
+			<a
+				class="btn btn-primary"
+				href="https://bill.dolity.me/"
+				rel="noopener noreferrer"
+				target="_blank"
+			>
+				{t(loc, 'products.billing.outbound')}
+			</a>
+		</p>
+		<p class="mt-4">
+			<a class="link link-hover text-sm" href={`${hrefForLocale(loc, 'products')}#product-hanbo`}>
+				{t(loc, 'products.viewInCatalog')}
+			</a>
+		</p>
+		<p class="mt-8">
+			<a class="link" href={hrefForLocale(loc, 'products')}>{t(loc, 'products.back')}</a>
+		</p>
+	</article>
+</BaseLayout>
