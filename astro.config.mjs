@@ -10,6 +10,7 @@ export default defineConfig({
 	site,
 	adapter: cloudflare(),
 	integrations: [sitemap()],
+  output: 'server',
 	vite: {
 		plugins: [tailwindcss()],
 	},
