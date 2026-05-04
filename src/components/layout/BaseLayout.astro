@@ -14,6 +14,7 @@ interface Props {
 
 const { title, description, seoPath = '' } = Astro.props;
 const lang = Astro.currentLocale === 'en' ? 'en' : 'th';
+const GA_MEASUREMENT_ID = import.meta.env.GA_MEASUREMENT_ID ?? 'G-8J3CNGZ6TX';
 ---
 
 <!doctype html>
@@ -35,6 +36,9 @@ const lang = Astro.currentLocale === 'en' ? 'en' : 'th';
 		</script>
 		<script>
 			import { THEME_STORAGE_KEY } from '../../constants/theme';
+			import { initGaDelegatedClicks } from '../../lib/ga-delegated-clicks';
+
+			initGaDelegatedClicks();
 
 			function applyThemeFromUserPreference() {
 				let stored = null;
@@ -81,6 +85,20 @@ const lang = Astro.currentLocale === 'en' ? 'en' : 'th';
 				syncThemeToggleLabels();
 			});
 		</script>
+
+
+    <!-- Google tag (gtag.js) -->
+    <!-- ต้องใส่ is:inline เพื่อบอกให้ Astro ไม่ต้องนำ script นี้ไป Bundle -->
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+    
+    <!-- ใช้ define:vars เพื่อส่งค่าตัวแปรจากฝั่ง Server (Frontmatter) เข้าไปใน Client Script -->
+    <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', GA_MEASUREMENT_ID);
+    </script>
+
 	</head>
 	<body class="font-sans flex min-h-screen flex-col bg-base-100 text-base-content">
 		<SiteHeader />

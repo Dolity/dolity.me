@@ -59,6 +59,8 @@ const resumeWithExpertiseAnchor = `${h('resume')}#expertise`;
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label={t(loc, 'resume.linkedinAria')}
+						data-ga-event="resume_linkedin_click"
+						data-ga-params={JSON.stringify({ locale: loc })}
 					>
 						{t(loc, 'resume.linkedinCta')}
 						<span class="ml-1 opacity-80" aria-hidden="true">↗</span>
@@ -69,6 +71,8 @@ const resumeWithExpertiseAnchor = `${h('resume')}#expertise`;
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label={t(loc, 'resume.githubAria')}
+						data-ga-event="resume_github_click"
+						data-ga-params={JSON.stringify({ locale: loc })}
 					>
 						{t(loc, 'resume.githubCta')}
 						<span class="ml-1 opacity-80" aria-hidden="true">↗</span>

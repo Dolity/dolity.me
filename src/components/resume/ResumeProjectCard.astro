@@ -55,7 +55,12 @@ const isPrimary = stripe % 2 === 0;
 			{
 				isDolity ? (
 					<>
-						<a class="link link-primary font-medium" href={prodUrl ?? h('')}>
+						<a
+							class="link link-primary font-medium"
+							href={prodUrl ?? h('')}
+							data-ga-event="resume_project_site_click"
+							data-ga-params={JSON.stringify({ locale: loc, project_id: item.id })}
+						>
 							{item.title[loc]}
 						</a>
 						<a class="link link-secondary text-sm font-medium" href={h('products')}>
@@ -70,6 +75,8 @@ const isPrimary = stripe % 2 === 0;
 								href={prodUrl}
 								rel="noopener noreferrer"
 								target="_blank"
+								data-ga-event="resume_project_site_click"
+								data-ga-params={JSON.stringify({ locale: loc, project_id: item.id })}
 							>
 								{linkLabel}
 								<span class="ml-1 opacity-70">↗</span>

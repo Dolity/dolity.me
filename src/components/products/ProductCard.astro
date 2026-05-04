@@ -151,6 +151,8 @@ const articleClass = isPrimary
 						class="btn btn-primary btn-sm shadow-md"
 						href={prodHref}
 						{...(sameSite ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+						data-ga-event="products_open_website_click"
+						data-ga-params={JSON.stringify({ locale: loc, project_id: item.id })}
 					>
 						{t(loc, 'products.catalog.openSite')}
 						{sameSite ? null : <span class="ml-1 opacity-70">↗</span>}

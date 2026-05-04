@@ -140,7 +140,9 @@ const certifications = await Promise.all(
 		/>
 		<ul class="grid gap-4 sm:grid-cols-2">
 			{
-				certifications.map(({ entry, Content }) => (
+				certifications.map(({ entry, Content }) => {
+					const certSlug = entry.id.replace(/^(?:en|th)\//, '');
+					return (
 					<li
 						class="group relative overflow-hidden rounded-2xl border border-base-300/80 bg-base-100/90 p-5 shadow-md transition duration-300 hover:border-accent/40 hover:shadow-lg"
 					>
@@ -167,6 +169,8 @@ const certifications = await Promise.all(
 										href={entry.data.credentialUrl}
 										rel="noopener noreferrer"
 										target="_blank"
+										data-ga-event="resume_cert_verify_click"
+										data-ga-params={JSON.stringify({ locale: loc, cert_slug: certSlug })}
 									>
 										{t(loc, 'resume.verifyCredential')}
 										<span class="ml-1 opacity-70">↗</span>
@@ -178,7 +182,8 @@ const certifications = await Promise.all(
 							</div>
 						</div>
 					</li>
-				))
+					);
+				})
 			}
 		</ul>
 	</section>
