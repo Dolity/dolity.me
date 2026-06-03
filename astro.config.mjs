@@ -9,6 +9,9 @@ const site = 'https://dolity.me';
 export default defineConfig({
 	site,
 	trailingSlash: 'never',
+  build: {
+    format: 'file'
+  },
 	adapter: cloudflare(),
 	integrations: [
 		sitemap({

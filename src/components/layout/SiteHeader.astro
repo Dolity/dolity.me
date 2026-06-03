@@ -1,7 +1,7 @@
 ---
 import {
 	hrefForLocale,
-	navSectionFromSegment,
+	navSectionFromPathname,
 	otherLocale,
 	segmentFromPathname,
 	type NavSection,
@@ -13,7 +13,7 @@ import ThemeToggle from './ThemeToggle.astro';
 const raw = Astro.currentLocale ?? 'th';
 const loc = raw === 'en' ? 'en' : 'th';
 const segment = segmentFromPathname(Astro.url.pathname);
-const activeNav = navSectionFromSegment(segment);
+const activeNav = navSectionFromPathname(Astro.url.pathname);
 const next = otherLocale(loc);
 const nextHref = hrefForLocale(next, segment);
 const nextLabel = t(loc, 'nav.langSwitch');
@@ -40,6 +40,8 @@ function mobileLinkClass(key: NavSection): string {
 		<a
 			class={desktopNavClass('home')}
 			href={h('')}
+			data-nav="home"
+			data-nav-kind="desktop"
 			aria-current={activeNav === 'home' ? 'page' : undefined}
 		>
 			{t(loc, 'nav.home')}
@@ -47,6 +49,8 @@ function mobileLinkClass(key: NavSection): string {
 		<a
 			class={desktopNavClass('about')}
 			href={h('about')}
+			data-nav="about"
+			data-nav-kind="desktop"
 			aria-current={activeNav === 'about' ? 'page' : undefined}
 		>
 			{t(loc, 'nav.about')}
@@ -54,6 +58,8 @@ function mobileLinkClass(key: NavSection): string {
 		<a
 			class={desktopNavClass('resume')}
 			href={h('resume')}
+			data-nav="resume"
+			data-nav-kind="desktop"
 			aria-current={activeNav === 'resume' ? 'page' : undefined}
 		>
 			{t(loc, 'nav.resume')}
@@ -61,6 +67,8 @@ function mobileLinkClass(key: NavSection): string {
 		<a
 			class={desktopNavClass('products')}
 			href={h('products')}
+			data-nav="products"
+			data-nav-kind="desktop"
 			aria-current={activeNav === 'products' ? 'page' : undefined}
 		>
 			{t(loc, 'nav.products')}
@@ -68,6 +76,8 @@ function mobileLinkClass(key: NavSection): string {
 		<a
 			class={desktopNavClass('support')}
 			href={h('support')}
+			data-nav="support"
+			data-nav-kind="desktop"
 			aria-current={activeNav === 'support' ? 'page' : undefined}
 		>
 			{t(loc, 'nav.support')}
@@ -106,6 +116,8 @@ function mobileLinkClass(key: NavSection): string {
 					<a
 						class={mobileLinkClass('home')}
 						href={h('')}
+						data-nav="home"
+						data-nav-kind="mobile"
 						aria-current={activeNav === 'home' ? 'page' : undefined}
 					>
 						{t(loc, 'nav.home')}
@@ -115,6 +127,8 @@ function mobileLinkClass(key: NavSection): string {
 					<a
 						class={mobileLinkClass('about')}
 						href={h('about')}
+						data-nav="about"
+						data-nav-kind="mobile"
 						aria-current={activeNav === 'about' ? 'page' : undefined}
 					>
 						{t(loc, 'nav.about')}
@@ -124,6 +138,8 @@ function mobileLinkClass(key: NavSection): string {
 					<a
 						class={mobileLinkClass('resume')}
 						href={h('resume')}
+						data-nav="resume"
+						data-nav-kind="mobile"
 						aria-current={activeNav === 'resume' ? 'page' : undefined}
 					>
 						{t(loc, 'nav.resume')}
@@ -133,6 +149,8 @@ function mobileLinkClass(key: NavSection): string {
 					<a
 						class={mobileLinkClass('products')}
 						href={h('products')}
+						data-nav="products"
+						data-nav-kind="mobile"
 						aria-current={activeNav === 'products' ? 'page' : undefined}
 					>
 						{t(loc, 'nav.products')}
@@ -142,6 +160,8 @@ function mobileLinkClass(key: NavSection): string {
 					<a
 						class={mobileLinkClass('support')}
 						href={h('support')}
+						data-nav="support"
+						data-nav-kind="mobile"
 						aria-current={activeNav === 'support' ? 'page' : undefined}
 					>
 						{t(loc, 'nav.support')}
@@ -165,3 +185,31 @@ function mobileLinkClass(key: NavSection): string {
 		<ThemeToggle />
 	</div>
 </header>
+
+<script>
+	import { navSectionFromPathname } from '../../i18n/path-utils';
+
+	const DESKTOP_ACTIVE =
+		'btn btn-ghost btn-sm bg-primary/15 font-semibold text-primary ring-1 ring-primary/30 shadow-sm shadow-primary/10';
+	const DESKTOP_IDLE = 'btn btn-ghost btn-sm';
+	const MOBILE_ACTIVE = 'bg-primary/15 font-semibold text-primary';
+
+	function syncNavHighlight() {
+		const active = navSectionFromPathname(window.location.pathname);
+		document.querySelectorAll<HTMLElement>('[data-nav]').forEach((el) => {
+			const key = el.dataset.nav;
+			const kind = el.dataset.navKind;
+			const isActive = active === key;
+			if (kind === 'desktop') {
+				el.className = isActive ? DESKTOP_ACTIVE : DESKTOP_IDLE;
+			} else if (kind === 'mobile') {
+				el.className = isActive ? MOBILE_ACTIVE : '';
+			}
+			if (isActive) el.setAttribute('aria-current', 'page');
+			else el.removeAttribute('aria-current');
+		});
+	}
+
+	syncNavHighlight();
+	document.addEventListener('astro:page-load', syncNavHighlight);
+</script>
