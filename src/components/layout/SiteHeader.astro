@@ -8,6 +8,7 @@ import {
 	t,
 } from '../../i18n';
 import BrandLockup from './BrandLockup.astro';
+import SiteContainer from './SiteContainer.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
 const raw = Astro.currentLocale ?? 'th';
@@ -32,11 +33,12 @@ function mobileLinkClass(key: NavSection): string {
 }
 ---
 
-<header class="navbar sticky top-0 z-50 border-b border-base-300 bg-base-200/80 backdrop-blur">
-	<div class="flex-1">
-		<BrandLockup variant="header" />
-	</div>
-	<nav class="hidden flex-none gap-1 sm:flex" aria-label="Main">
+<header class="sticky top-0 z-50 border-b border-base-300 bg-base-200/80 backdrop-blur">
+	<SiteContainer class="flex min-h-16 items-center gap-2">
+		<div class="flex-1">
+			<BrandLockup variant="header" />
+		</div>
+		<nav class="hidden flex-none gap-1 sm:flex" aria-label="Main">
 		<a
 			class={desktopNavClass('home')}
 			href={h('')}
@@ -184,6 +186,7 @@ function mobileLinkClass(key: NavSection): string {
 		</a>
 		<ThemeToggle />
 	</div>
+	</SiteContainer>
 </header>
 
 <script>

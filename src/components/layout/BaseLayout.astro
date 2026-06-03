@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import SeoHead from './SeoHead.astro';
+import SiteContainer from './SiteContainer.astro';
 import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
 import '../../styles/global.css';
@@ -103,9 +104,9 @@ const GA_MEASUREMENT_ID = import.meta.env.GA_MEASUREMENT_ID ?? 'G-8J3CNGZ6TX';
 	<body class="font-sans flex min-h-screen flex-col bg-base-100 text-base-content">
 		<SiteHeader />
 		<main class="flex-1">
-			<div class="container mx-auto px-4 py-10">
+			<SiteContainer class="py-10">
 				<slot />
-			</div>
+			</SiteContainer>
 		</main>
 		<SiteFooter />
 	</body>
