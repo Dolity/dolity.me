@@ -1,17 +1,3 @@
 ---
-import BaseLayout from '../components/layout/BaseLayout.astro';
-import Hero from '../components/home/Hero.astro';
-import ProductHighlights from '../components/home/ProductHighlights.astro';
-import { t } from '../i18n';
-
-export const prerender = true;
-
-const loc = 'th';
-const title = `${t(loc, 'site.name')} — ${t(loc, 'nav.home')}`;
-const description = t(loc, 'home.hero.sub');
+return Astro.redirect('/th', 301);
 ---
-
-<BaseLayout title={title} description={description} seoPath="">
-	<Hero />
-	<ProductHighlights />
-</BaseLayout>

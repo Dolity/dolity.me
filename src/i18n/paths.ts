@@ -1,3 +1,5 @@
+import { getRelativeLocaleUrl } from 'astro:i18n';
+
 /** Top-level site sections matched to main nav (including nested e.g. products/*). */
 export type NavSection = 'home' | 'about' | 'resume' | 'products' | 'support';
 
@@ -20,15 +22,14 @@ export function navSectionFromSegment(segment: string): NavSection | null {
  */
 export function segmentFromPathname(pathname: string): string {
 	const normalized = pathname.replace(/\/$/, '') || '/';
-	if (normalized === '/' || normalized === '/en') return '';
+	if (normalized === '/th' || normalized === '/en') return '';
+	if (normalized.startsWith('/th/')) return normalized.slice(4);
 	if (normalized.startsWith('/en/')) return normalized.slice(4);
-	if (normalized.startsWith('/')) return normalized.slice(1);
 	return '';
 }
 
 export function hrefForLocale(locale: 'th' | 'en', segment: string): string {
-	if (locale === 'th') return segment ? `/${segment}` : '/';
-	return segment ? `/en/${segment}` : '/en';
+	return getRelativeLocaleUrl(locale, segment || undefined);
 }
 
 export function otherLocale(current: string): 'th' | 'en' {
