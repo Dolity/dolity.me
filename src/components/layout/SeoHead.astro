@@ -29,6 +29,11 @@ const alternates = localeCodes.map((loc) => ({
 
 const canonical = getAbsoluteLocaleUrl(Astro.currentLocale ?? 'th', pathArg);
 
+const siteOrigin = Astro.site?.href ?? 'https://dolity.me/';
+const xDefaultHref = seoPath
+	? getAbsoluteLocaleUrl('th', pathArg)
+	: siteOrigin;
+
 const personJsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'Person',
@@ -58,7 +63,7 @@ const personJsonLd = {
 <link
 	rel="alternate"
 	hreflang="x-default"
-	href={getAbsoluteLocaleUrl('th', pathArg)}
+	href={xDefaultHref}
 />
 
 <meta property="og:type" content="website" />
