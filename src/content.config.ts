@@ -31,20 +31,16 @@ const certifications = defineCollection({
 		issuer: z.string(),
 		issued: z.string(),
 		credentialId: z.string().optional(),
-		credentialUrl: z.string().url().optional(),
+		credentialUrl: z.url().optional(),
 		order: z.number().default(0),
 	}),
 });
 
-const projects = defineCollection({
-	loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+const now = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/now' }),
 	schema: z.object({
-		title: z.string(),
-		role: z.string().optional(),
-		period: z.string().optional(),
-		order: z.number().default(0),
-		externalUrl: z.url().optional(),
+		updated: z.coerce.date(),
 	}),
 });
 
-export const collections = { experience, education, certifications, projects };
+export const collections = { experience, education, certifications, now };

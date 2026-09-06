@@ -1,8 +1,8 @@
 ---
 institution: Mahasarakham University
-degree: Bachelor's degree, Computer Science
+degree: BSc, Computer Science
 period: 2020 – 2024
 grade: GPA 3.24
 order: 1
 ---
-Coursework across languages, web and mobile stacks, data stores, and CS fundamentals.
+Computer science fundamentals, programming languages, and database systems, through to web and mobile development.

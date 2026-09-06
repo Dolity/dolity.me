@@ -4,110 +4,201 @@ import SeoHead from './SeoHead.astro';
 import SiteContainer from './SiteContainer.astro';
 import SiteHeader from './SiteHeader.astro';
 import SiteFooter from './SiteFooter.astro';
+import CommandPalette from '../ui/CommandPalette.astro';
+import ConsentBanner from './ConsentBanner.astro';
 import '../../styles/global.css';
+import { CONSENT_DENY_REGIONS, CONSENT_STORAGE_KEY } from '../../constants/consent';
 import { THEME_STORAGE_KEY } from '../../constants/theme';
+import { t, toLocale } from '../../i18n';
 
 interface Props {
 	title: string;
 	description: string;
 	seoPath?: string;
+	ogImage?: string;
+	noindex?: boolean;
 }
 
-const { title, description, seoPath = '' } = Astro.props;
-const lang = Astro.currentLocale === 'en' ? 'en' : 'th';
+const { title, description, seoPath = '', ogImage, noindex } = Astro.props;
+const loc = toLocale(Astro.currentLocale);
 const GA_MEASUREMENT_ID = import.meta.env.GA_MEASUREMENT_ID ?? 'G-8J3CNGZ6TX';
+/** Routes dev hits into GA4's DebugView so the schema can be checked live. */
+const GA_DEBUG = import.meta.env.DEV;
 ---
 
 <!doctype html>
-<html lang={lang}>
+<html lang={loc} transition:animate="none">
 	<head>
-		<SeoHead title={title} description={description} seoPath={seoPath} />
+		<SeoHead
+			title={title}
+			description={description}
+			seoPath={seoPath}
+			ogImage={ogImage}
+			noindex={noindex}
+		/>
 		<ClientRouter />
+
+		<!-- Applied before first paint so the page never flashes the wrong theme. -->
 		<script is:inline define:vars={{ THEME_STORAGE_KEY }}>
 			(() => {
+				const legacy = { pastel: 'light', forest: 'dark' };
 				let stored = null;
 				try {
 					stored = localStorage.getItem(THEME_STORAGE_KEY);
 				} catch (_) {}
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 				const theme =
-					stored === 'pastel' || stored === 'forest' ? stored : prefersDark ? 'forest' : 'pastel';
-				document.documentElement.setAttribute('data-theme', theme);
+					stored === 'light' || stored === 'dark'
+						? stored
+						: (legacy[stored] ??
+							(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+				document.documentElement.dataset.theme = theme;
+
+				// Which ⌘K hint the header shows. Set here, before paint, so the button
+				// never flashes the wrong key. iPadOS reports platform "MacIntel", so
+				// touch points are what separate a tablet from a desktop Mac.
+				const p = navigator.platform || '';
+				const apple = /Mac|iPhone|iPad|iPod/.test(p);
+				document.documentElement.dataset.kbd = apple
+					? navigator.maxTouchPoints > 1
+						? 'touch'
+						: 'mac'
+					: 'ctrl';
 			})();
 		</script>
-		<script>
-			import { THEME_STORAGE_KEY } from '../../constants/theme';
-			import { initGaDelegatedClicks } from '../../lib/ga-delegated-clicks';
 
-			initGaDelegatedClicks();
-
-			function applyThemeFromUserPreference() {
-				let stored = null;
-				try {
-					stored = localStorage.getItem(THEME_STORAGE_KEY);
-				} catch {
-					/* ignore */
-				}
-				const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-				const theme =
-					stored === 'pastel' || stored === 'forest' ? stored : prefersDark ? 'forest' : 'pastel';
-				document.documentElement.setAttribute('data-theme', theme);
+		<!-- Google tag (gtag.js) — is:inline keeps Astro from bundling it. -->
+		<script
+			is:inline
+			async
+			src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
+		<script
+			is:inline
+			define:vars={{ GA_MEASUREMENT_ID, GA_DEBUG, CONSENT_STORAGE_KEY, CONSENT_DENY_REGIONS }}
+		>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
 			}
 
-			function syncThemeToggleLabels() {
-				const moon = document.getElementById('dolity-theme-label-moon');
-				const sun = document.getElementById('dolity-theme-label-sun');
-				if (!moon || !sun) return;
-				const isDark = document.documentElement.getAttribute('data-theme') === 'forest';
-				moon.classList.toggle('hidden', !isDark);
-				sun.classList.toggle('hidden', isDark);
-			}
-
-			function onThemeToggleClick(ev: MouseEvent) {
-				const el = ev.target;
-				if (!(el instanceof Element)) return;
-				const btn = el.closest('#dolity-theme-toggle');
-				if (!btn) return;
-				ev.preventDefault();
-				const html = document.documentElement;
-				const next = html.getAttribute('data-theme') === 'forest' ? 'pastel' : 'forest';
-				html.setAttribute('data-theme', next);
-				try {
-					localStorage.setItem(THEME_STORAGE_KEY, next);
-				} catch {
-					/* ignore */
-				}
-				syncThemeToggleLabels();
-			}
-
-			document.addEventListener('click', onThemeToggleClick);
-			document.addEventListener('astro:page-load', () => {
-				applyThemeFromUserPreference();
-				syncThemeToggleLabels();
+			// Consent Mode v2 — the defaults must be in the queue before `config`.
+			// Ad signals are denied for good: this site has never served an ad.
+			const denied = {
+				ad_storage: 'denied',
+				ad_user_data: 'denied',
+				ad_personalization: 'denied',
+			};
+			gtag('consent', 'default', { ...denied, analytics_storage: 'granted' });
+			gtag('consent', 'default', {
+				...denied,
+				analytics_storage: 'denied',
+				region: CONSENT_DENY_REGIONS,
+				wait_for_update: 500,
 			});
+
+			// A returning visitor's answer is applied before the first hit, so their
+			// choice is never a beat behind the page.
+			let consent = null;
+			try {
+				consent = localStorage.getItem(CONSENT_STORAGE_KEY);
+			} catch (_) {}
+			if (consent === 'granted' || consent === 'denied') {
+				gtag('consent', 'update', { analytics_storage: consent });
+			}
+
+			gtag('js', new Date());
+			// `send_page_view: false` because this script never re-runs after a view
+			// transition — `src/lib/analytics.ts` owns every page_view instead.
+			gtag('config', GA_MEASUREMENT_ID, { send_page_view: false, debug_mode: GA_DEBUG });
 		</script>
-
-
-    <!-- Google tag (gtag.js) -->
-    <!-- ต้องใส่ is:inline เพื่อบอกให้ Astro ไม่ต้องนำ script นี้ไป Bundle -->
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
-    
-    <!-- ใช้ define:vars เพื่อส่งค่าตัวแปรจากฝั่ง Server (Frontmatter) เข้าไปใน Client Script -->
-    <script is:inline define:vars={{ GA_MEASUREMENT_ID }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', GA_MEASUREMENT_ID);
-    </script>
-
 	</head>
-	<body class="font-sans flex min-h-screen flex-col bg-base-100 text-base-content">
+
+	<body class="flex min-h-screen flex-col font-sans">
+		<a
+			href="#main"
+			class="sr-only rounded border border-line bg-surface px-3 py-2 text-sm focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-100"
+		>
+			{t(loc, 'nav.skip')}
+		</a>
+
 		<SiteHeader />
-		<main class="flex-1">
-			<SiteContainer class="py-10">
+
+		<main id="main" class="flex-1">
+			<SiteContainer class="py-10 sm:py-14">
 				<slot />
 			</SiteContainer>
 		</main>
+
 		<SiteFooter />
+		<CommandPalette />
+		<ConsentBanner />
+
+		<script>
+			import { THEME_STORAGE_KEY } from '../../constants/theme';
+			import { gaEvent, initAnalytics } from '../../lib/analytics';
+			import { initCommandPalette } from '../../lib/command-palette';
+			import { navSectionFromPathname } from '../../i18n/path-utils';
+			import { readStoredTheme, resolveTheme, writeStoredTheme } from '../../lib/theme';
+
+			initAnalytics();
+			initCommandPalette();
+
+			function currentTheme() {
+				return resolveTheme(readStoredTheme(THEME_STORAGE_KEY));
+			}
+
+			function syncThemeToggle(root: ParentNode = document) {
+				const isDark = document.documentElement.dataset.theme === 'dark';
+				root.querySelector('#dolity-theme-moon')?.classList.toggle('hidden', !isDark);
+				root.querySelector('#dolity-theme-sun')?.classList.toggle('hidden', isDark);
+			}
+
+			/**
+			 * The swap copies <html> attributes from the incoming document, which wipes
+			 * the theme we set client-side. Repairing it on `astro:page-load` is too
+			 * late — that fires after the swap has already painted. Setting it on the
+			 * incoming document before the swap is what keeps the transition flash-free.
+			 */
+			document.addEventListener('astro:before-swap', (ev) => {
+				const event = ev as Event & { newDocument: Document; to: URL };
+				event.newDocument.documentElement.dataset.theme = currentTheme();
+				// Detected once before first paint; the platform can't change mid-session,
+				// so carrying the value forward beats re-sniffing it on every swap.
+				event.newDocument.documentElement.dataset.kbd =
+					document.documentElement.dataset.kbd ?? 'ctrl';
+				syncThemeToggle(event.newDocument);
+				markActiveNav(event.newDocument, event.to.pathname);
+			});
+
+			function markActiveNav(root: ParentNode = document, pathname = location.pathname) {
+				const active = navSectionFromPathname(pathname);
+				for (const el of root.querySelectorAll<HTMLElement>('[data-nav]')) {
+					const isActive = el.dataset.nav === active;
+					// One source of truth for the styling: CSS keys off this attribute,
+					// so the class strings are never duplicated in JS.
+					el.toggleAttribute('data-active', isActive);
+					if (isActive) el.setAttribute('aria-current', 'page');
+					else el.removeAttribute('aria-current');
+				}
+			}
+
+			document.addEventListener('click', (ev) => {
+				const target = ev.target;
+				if (!(target instanceof Element)) return;
+				if (!target.closest('#dolity-theme-toggle')) return;
+
+				ev.preventDefault();
+				const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+				document.documentElement.dataset.theme = next;
+				writeStoredTheme(THEME_STORAGE_KEY, next);
+				syncThemeToggle();
+				gaEvent('theme_change', { theme: next });
+			});
+
+			document.addEventListener('astro:page-load', () => {
+				document.documentElement.dataset.theme = currentTheme();
+				syncThemeToggle();
+				markActiveNav();
+			});
+		</script>
 	</body>
 </html>

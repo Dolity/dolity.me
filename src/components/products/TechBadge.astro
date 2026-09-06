@@ -1,46 +1,45 @@
 ---
+/**
+ * A tech name with its brand mark.
+ *
+ * The mark is inlined from `TECH_ICONS` at build time — no third-party request
+ * and no client JS, which is why this doesn't go back to cdn.simpleicons.org.
+ * Badges with no icon (Recharts, next-intl, cron…) keep the mono `·` bullet.
+ * The mark is monochrome so it reads as part of the label in both themes.
+ */
+import { TECH_ICONS } from '../../data/tech-icons';
+import type { TechIconSlug } from '../../data/tech-icons';
+
 interface Props {
 	label: string;
-	slug?: string;
+	slug?: TechIconSlug;
 }
 
 const { label, slug } = Astro.props;
-const iconUrl = slug ? `https://cdn.simpleicons.org/${encodeURIComponent(slug)}` : null;
-
-/** Masked sprite: fill follows theme `base-content` instead of fixed brand SVG colors. */
-const iconMaskStyle = iconUrl
-	? [
-			`mask-image: url("${iconUrl}")`,
-			`-webkit-mask-image: url("${iconUrl}")`,
-			'mask-size: contain',
-			'-webkit-mask-size: contain',
-			'mask-repeat: no-repeat',
-			'-webkit-mask-repeat: no-repeat',
-			'mask-position: center',
-			'-webkit-mask-position: center',
-		].join('; ')
-	: '';
+const path = slug ? TECH_ICONS[slug] : undefined;
 ---
 
-{
-	iconUrl ? (
-		<span
-			class="inline-flex items-center gap-1.5 rounded-full border border-base-300/80 bg-base-100/90 px-2.5 py-1 text-xs font-medium text-base-content/90 shadow-sm"
-			title={label}
-		>
-			<span
-				class="inline-block h-[18px] w-[18px] shrink-0 bg-base-content opacity-90"
-				style={iconMaskStyle}
+<span
+	class="inline-flex items-center gap-1.5 rounded border border-line bg-surface-2 px-2 py-0.5 text-xs text-muted"
+	title={label}
+>
+	{
+		path ? (
+			<svg
+				viewBox="0 0 24 24"
+				width="12"
+				height="12"
+				fill="currentColor"
 				aria-hidden="true"
-			/>
-			<span>{label}</span>
-		</span>
-	) : (
-		<span
-			class="inline-flex items-center rounded-full border border-base-300/80 bg-base-200/60 px-2.5 py-1 text-xs font-medium text-base-content/90"
-			title={label}
-		>
-			{label}
-		</span>
-	)
-}
+				class="shrink-0"
+			>
+				<path d={path} />
+			</svg>
+		) : (
+			<span class="font-mono" aria-hidden="true">
+				·
+			</span>
+		)
+	}
+	<span>{label}</span>
+</span>

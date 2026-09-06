@@ -1,232 +1,186 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { getProductsSorted } from '../../data/products-catalog';
-import { hrefForLocale, t } from '../../i18n';
 import ResumeExpertise from './ResumeExpertise.astro';
-import ResumeProjectCard from './ResumeProjectCard.astro';
-import ResumeSectionHeading from './ResumeSectionHeading.astro';
+import NextSteps from '../ui/NextSteps.astro';
+import Prompt from '../ui/Prompt.astro';
+import Row from '../ui/Row.astro';
+import { getProductsSorted } from '../../data/products-catalog';
+import { hrefForLocale, t, toLocale } from '../../i18n';
 
-const loc = Astro.currentLocale === 'en' ? 'en' : 'th';
-const h = (s: string) => hrefForLocale(loc, s);
+const loc = toLocale(Astro.currentLocale);
 
-const resumeProjects = getProductsSorted();
+/** Locale is encoded in the entry id (`th/woxa`), so filter on the prefix. */
+const forLocale = <T extends { id: string; data: { order: number } }>(entries: T[]) =>
+	entries.filter((e) => e.id.startsWith(`${loc}/`)).sort((a, b) => a.data.order - b.data.order);
 
-const experienceEntries = await getCollection('experience', ({ id }) => id.startsWith(`${loc}/`));
-const educationEntries = await getCollection('education', ({ id }) => id.startsWith(`${loc}/`));
-const certificationEntries = await getCollection('certifications', ({ id }) => id.startsWith(`${loc}/`));
+const experience = forLocale(await getCollection('experience'));
+const education = forLocale(await getCollection('education'));
+const certifications = forLocale(await getCollection('certifications'));
+const products = getProductsSorted();
 
-const sortByOrder = <T extends { data: { order: number } }>(a: T, b: T) => a.data.order - b.data.order;
-experienceEntries.sort(sortByOrder);
-educationEntries.sort(sortByOrder);
-certificationEntries.sort(sortByOrder);
-
-const experience = await Promise.all(
-	experienceEntries.map(async (entry) => {
-		const { Content } = await render(entry);
-		return { entry, Content };
-	}),
+const rendered = await Promise.all(
+	[...experience, ...education].map(async (entry) => ({
+		id: entry.id,
+		Content: (await render(entry)).Content,
+	})),
 );
-
-const education = await Promise.all(
-	educationEntries.map(async (entry) => {
-		const { Content } = await render(entry);
-		return { entry, Content };
-	}),
-);
-
-const certifications = await Promise.all(
-	certificationEntries.map(async (entry) => {
-		const { Content } = await render(entry);
-		return { entry, Content };
-	}),
-);
-
+const contentById = new Map(rendered.map((r) => [r.id, r.Content]));
 ---
 
-<div class="space-y-16 lg:space-y-20">
+<div class="space-y-14">
 	<ResumeExpertise />
 
-	<section class="py-2" aria-labelledby="exp-heading">
-		<ResumeSectionHeading
-			eyebrow={t(loc, 'resume.expEyebrow')}
-			title={t(loc, 'resume.experience')}
-			id="exp-heading"
-		/>
-		<ul class="flex flex-col gap-6">
+	<section data-ga-section="experience">
+		<Prompt cmd={t(loc, 'cmd.experience')} heading={t(loc, 'resume.experience')} />
+		<ol class="mt-5 border-t border-line">
 			{
-				experience.map(({ entry, Content }, i) => (
-					<li
-						class:list={[
-							'group relative overflow-hidden rounded-3xl p-6 shadow-lg transition duration-300 lg:p-8',
-							i % 2 === 0
-								? 'border-2 border-primary/20 bg-base-200 hover:border-primary/40 hover:shadow-xl'
-								: 'border border-base-300/80 bg-gradient-to-b from-base-200 to-base-300/35 hover:border-secondary/40 hover:shadow-xl',
-						]}
-					>
-						<div
-							class:list={[
-								'pointer-events-none absolute -right-16 top-0 h-48 w-48 rounded-full blur-2xl transition',
-								i % 2 === 0
-									? 'bg-primary/10 group-hover:bg-primary/15'
-									: 'bg-secondary/15 group-hover:bg-secondary/22',
-							]}
-							aria-hidden="true"
-						/>
-						<div class="relative space-y-2">
-							<h3 class="flex flex-wrap items-center gap-2 text-xl font-bold">
-								{entry.data.title}
-								<span class="badge badge-outline badge-sm font-normal">{entry.data.period}</span>
-							</h3>
-							<p class="text-sm font-semibold opacity-85">{entry.data.company}</p>
-							{entry.data.location ? <p class="text-sm opacity-70">{entry.data.location}</p> : null}
-							<div class="mt-2 max-w-none text-base leading-relaxed opacity-95 [&_li]:mb-1 [&_ul]:list-inside [&_ul]:list-disc [&_ul]:pl-1">
-								<Content />
-							</div>
-						</div>
-					</li>
-				))
-			}
-		</ul>
-	</section>
-
-	<section class="py-2" aria-labelledby="edu-heading">
-		<ResumeSectionHeading
-			eyebrow={t(loc, 'resume.eduEyebrow')}
-			title={t(loc, 'resume.education')}
-			id="edu-heading"
-		/>
-		<ul class="flex flex-col gap-6">
-			{
-				education.map(({ entry, Content }, i) => (
-					<li
-						class:list={[
-							'group relative overflow-hidden rounded-3xl p-6 shadow-lg transition duration-300 lg:p-8',
-							i % 2 === 0
-								? 'border-2 border-secondary/25 bg-base-200 hover:border-secondary/45 hover:shadow-xl'
-								: 'border border-base-300/80 bg-gradient-to-b from-base-200 to-base-300/35 hover:border-primary/30 hover:shadow-xl',
-						]}
-					>
-						<div
-							class:list={[
-								'pointer-events-none absolute -left-12 bottom-0 h-40 w-40 rounded-full blur-2xl transition',
-								i % 2 === 0
-									? 'bg-secondary/12 group-hover:bg-secondary/18'
-									: 'bg-primary/10 group-hover:bg-primary/14',
-							]}
-							aria-hidden="true"
-						/>
-						<div class="relative space-y-2">
-							<h3 class="flex flex-wrap items-center gap-2 text-xl font-bold">
-								{entry.data.institution}
-								<span class="badge badge-outline badge-sm font-normal">{entry.data.period}</span>
-							</h3>
-							<p class="text-sm font-semibold opacity-85">{entry.data.degree}</p>
-							{entry.data.grade ? <p class="text-sm opacity-85">{entry.data.grade}</p> : null}
-							<div class="mt-2 max-w-none text-base leading-relaxed opacity-95 [&_p]:mb-2">
-								<Content />
-							</div>
-						</div>
-					</li>
-				))
-			}
-		</ul>
-	</section>
-
-	<section class="py-2" aria-labelledby="cert-heading">
-		<ResumeSectionHeading
-			eyebrow={t(loc, 'resume.certEyebrow')}
-			title={t(loc, 'resume.certifications')}
-			id="cert-heading"
-		/>
-		<ul class="grid gap-4 sm:grid-cols-2">
-			{
-				certifications.map(({ entry, Content }) => {
-					const certSlug = entry.id.replace(/^(?:en|th)\//, '');
+				experience.map((entry) => {
+					const Content = contentById.get(entry.id)!;
 					return (
-					<li
-						class="group relative overflow-hidden rounded-2xl border border-base-300/80 bg-base-100/90 p-5 shadow-md transition duration-300 hover:border-accent/40 hover:shadow-lg"
-					>
-						<div
-							class="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/10 blur-2xl group-hover:bg-accent/15"
-							aria-hidden="true"
-						/>
-						<div class="relative space-y-2">
-							<h3 class="font-semibold leading-snug">{entry.data.title}</h3>
-							<p class="text-sm opacity-80">
-								{entry.data.issuer}
-								<span class="mx-1 opacity-50">·</span>
-								{entry.data.issued}
+						<li class="border-b border-line py-6" data-print="keep">
+							<div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+								<h3 class="font-semibold text-ink">{entry.data.title}</h3>
+								<span class="font-mono text-xs text-muted">{entry.data.period}</span>
+							</div>
+							<p class="mt-1 text-sm text-muted">
+								{entry.data.company}
+								{entry.data.location && ` · ${entry.data.location}`}
 							</p>
-							{entry.data.credentialId ? (
-								<p class="text-xs opacity-70">
-									ID: <span translate="no">{entry.data.credentialId}</span>
-								</p>
-							) : null}
-							{entry.data.credentialUrl ? (
-								<p class="mt-1">
-									<a
-										class="btn btn-ghost btn-sm border border-base-300 px-3"
-										href={entry.data.credentialUrl}
-										rel="noopener noreferrer"
-										target="_blank"
-										data-ga-event="resume_cert_verify_click"
-										data-ga-params={JSON.stringify({ locale: loc, cert_slug: certSlug })}
-									>
-										{t(loc, 'resume.verifyCredential')}
-										<span class="ml-1 opacity-70">↗</span>
-									</a>
-								</p>
-							) : null}
-							<div class="mt-1 max-w-none text-sm leading-relaxed opacity-90 [&_p]:mb-1">
+							<div class="resume-prose mt-3">
 								<Content />
 							</div>
-						</div>
-					</li>
+						</li>
 					);
 				})
 			}
+		</ol>
+	</section>
+
+	<section data-ga-section="education">
+		<Prompt cmd={t(loc, 'cmd.education')} heading={t(loc, 'resume.education')} />
+		<ol class="mt-5 border-t border-line">
+			{
+				education.map((entry) => {
+					const Content = contentById.get(entry.id)!;
+					return (
+						<li class="border-b border-line py-6" data-print="keep">
+							<div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+								<h3 class="font-semibold text-ink">{entry.data.institution}</h3>
+								<span class="font-mono text-xs text-muted">{entry.data.period}</span>
+							</div>
+							<p class="mt-1 text-sm text-muted">
+								{entry.data.degree}
+								{entry.data.grade && ` · ${entry.data.grade}`}
+							</p>
+							<div class="resume-prose mt-3">
+								<Content />
+							</div>
+						</li>
+					);
+				})
+			}
+		</ol>
+	</section>
+
+	<section data-ga-section="certifications">
+		<Prompt cmd={t(loc, 'cmd.certs')} heading={t(loc, 'resume.certifications')} />
+		<ul class="mt-5 border-t border-line">
+			{
+				certifications.map((entry) => (
+					<li
+						class="flex flex-col gap-1 border-b border-line py-4 sm:flex-row sm:items-baseline sm:gap-4"
+						data-print="keep"
+					>
+						<span class="shrink-0 font-mono text-xs text-muted sm:w-24">{entry.data.issued}</span>
+						<span class="min-w-0 flex-1">
+							<span class="block text-sm font-medium text-ink">{entry.data.title}</span>
+							<span class="block text-sm text-muted">{entry.data.issuer}</span>
+							{entry.data.credentialId && (
+								<span class="block font-mono text-xs text-muted">
+									{t(loc, 'resume.credentialId')}: {entry.data.credentialId}
+								</span>
+							)}
+						</span>
+						{entry.data.credentialUrl && (
+							<a
+								href={entry.data.credentialUrl}
+								target="_blank"
+								rel="noopener noreferrer"
+								data-ga-event="select_content"
+								data-ga-params={JSON.stringify({
+									content_type: 'certification',
+									content_id: entry.id.slice(loc.length + 1),
+									link_location: 'resume_certs',
+								})}
+								data-print="expand-link"
+								class="shrink-0 font-mono text-xs text-accent hover:underline"
+							>
+								{t(loc, 'resume.verifyCredential')} ↗
+							</a>
+						)}
+					</li>
+				))
+			}
 		</ul>
 	</section>
 
-	<section class="py-2" aria-labelledby="proj-heading">
-		<ResumeSectionHeading
-			eyebrow={t(loc, 'resume.projEyebrow')}
-			title={t(loc, 'resume.projects')}
-			id="proj-heading"
-		/>
-		<ul class="flex flex-col gap-6">
-			{resumeProjects.map((item, i) => <ResumeProjectCard item={item} loc={loc} stripe={i} />)}
-		</ul>
+	<section data-ga-section="projects">
+		<Prompt cmd={t(loc, 'cmd.projects')} heading={t(loc, 'resume.projects')}>
+			<p class="prose-measure pt-1 text-sm text-muted">{t(loc, 'resume.projectsLead')}</p>
+		</Prompt>
+		<div class="mt-5 border-t border-line">
+			{
+				products.map((p) => (
+					<Row
+						href={p.prodUrl ?? hrefForLocale(loc, `products/${p.slug}`)}
+						name={p.id}
+						title={p.title[loc]}
+						desc={p.summary[loc]}
+						meta={p.prodUrl ? new URL(p.prodUrl).hostname : undefined}
+						external={Boolean(p.prodUrl)}
+						gaEvent="select_content"
+						gaParams={{
+							content_type: p.prodUrl ? 'product_site' : 'product_detail',
+							content_id: p.slug,
+							link_location: 'resume_projects',
+						}}
+					/>
+				))
+			}
+		</div>
 	</section>
 
-	<div
-		class="relative overflow-hidden rounded-3xl border border-base-300/60 bg-gradient-to-br from-primary via-primary/90 to-secondary text-primary-content shadow-xl"
-	>
-		<div
-			class="pointer-events-none absolute inset-0 opacity-25"
-			aria-hidden="true"
-			style="background-image: radial-gradient(circle at 20% 20%, white 0, transparent 50%), radial-gradient(circle at 80% 80%, white 0, transparent 45%);"
-		>
-		</div>
-		<div class="relative flex flex-col gap-5 px-6 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-10">
-			<div class="min-w-0 flex-1 text-center sm:text-left">
-				<p class="text-lg font-bold sm:text-xl">{t(loc, 'resume.ctaBand.title')}</p>
-				<p class="mt-2 text-sm leading-relaxed opacity-90 sm:text-base">{t(loc, 'resume.ctaBand.sub')}</p>
-			</div>
-			<div class="flex flex-wrap justify-center gap-3 sm:justify-end">
-				<a
-					class="btn border-0 bg-base-100 text-base-content hover:bg-base-200"
-					href={h('products')}
-				>
-					{t(loc, 'resume.ctaBand.products')}
-				</a>
-				<a
-					class="btn btn-outline border-2 border-primary-content/50 text-primary-content hover:border-primary-content hover:bg-primary-content/10"
-					href={h('support')}
-				>
-					{t(loc, 'resume.ctaBand.support')}
-				</a>
-			</div>
-		</div>
-	</div>
+	<NextSteps sections={['products', 'about', 'uses', 'support']} />
 </div>
+
+<style>
+	/* Markdown bodies from the content collections. */
+	.resume-prose :global(ul) {
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+	}
+	.resume-prose :global(li) {
+		position: relative;
+		padding-left: 1.25rem;
+		font-size: 0.875rem;
+		line-height: 1.7;
+		color: var(--muted);
+	}
+	.resume-prose :global(li)::before {
+		content: '\2013';
+		position: absolute;
+		left: 0;
+		color: var(--accent);
+		font-family: var(--font-mono);
+	}
+	.resume-prose :global(p) {
+		font-size: 0.875rem;
+		line-height: 1.7;
+		color: var(--muted);
+	}
+	.resume-prose :global(strong) {
+		font-weight: 500;
+		color: var(--ink);
+	}
+</style>

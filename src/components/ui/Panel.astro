@@ -1,0 +1,37 @@
+---
+/**
+ * A terminal window. Replaces the hero shell that was copy-pasted across five
+ * components (gradient blobs, grid overlay, 2xl shadow).
+ *
+ * `label` is the path shown in the title bar — machine voice, so it stays in
+ * mono and is never translated.
+ */
+interface Props {
+	label: string;
+	class?: string;
+}
+
+const { label, class: className } = Astro.props;
+---
+
+<section
+	class:list={[
+		'overflow-hidden rounded-lg border border-line bg-surface',
+		'shadow-[var(--shadow)]',
+		className,
+	]}
+>
+	<div
+		class="flex items-center gap-2 border-b border-line bg-surface-2 px-3 py-2 font-mono text-xs text-muted"
+	>
+		<span class="flex gap-1.5" aria-hidden="true">
+			<span class="size-2 rounded-full bg-line"></span>
+			<span class="size-2 rounded-full bg-line"></span>
+			<span class="size-2 rounded-full bg-line"></span>
+		</span>
+		<span class="truncate">{label}</span>
+	</div>
+	<div class="p-5 sm:p-8">
+		<slot />
+	</div>
+</section>

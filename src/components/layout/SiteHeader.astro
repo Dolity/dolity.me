@@ -1,218 +1,143 @@
 ---
+/**
+ * The terminal title bar.
+ *
+ * Not `transition:persist` — persisting would carry the *old* header into the
+ * new page, so switching TH→EN would leave the header in the previous
+ * language. It swaps like everything else; the brand mark keeps visual
+ * continuity through a named transition instead.
+ *
+ * Active state is a `data-active` attribute, styled in CSS below. The client
+ * script toggles the attribute and never touches class strings, so there is
+ * only one definition of what "active" looks like.
+ */
 import {
+	HEADER_SECTIONS,
 	hrefForLocale,
 	navSectionFromPathname,
 	otherLocale,
 	segmentFromPathname,
-	type NavSection,
 	t,
+	toLocale,
 } from '../../i18n';
 import BrandLockup from './BrandLockup.astro';
 import SiteContainer from './SiteContainer.astro';
 import ThemeToggle from './ThemeToggle.astro';
 
-const raw = Astro.currentLocale ?? 'th';
-const loc = raw === 'en' ? 'en' : 'th';
+const loc = toLocale(Astro.currentLocale);
 const segment = segmentFromPathname(Astro.url.pathname);
 const activeNav = navSectionFromPathname(Astro.url.pathname);
 const next = otherLocale(loc);
-const nextHref = hrefForLocale(next, segment);
-const nextLabel = t(loc, 'nav.langSwitch');
-
-const h = (s: string) => hrefForLocale(loc, s);
-
-function desktopNavClass(key: NavSection): string {
-	const base = 'btn btn-ghost btn-sm';
-	if (activeNav !== key) return base;
-	return `${base} bg-primary/15 font-semibold text-primary ring-1 ring-primary/30 shadow-sm shadow-primary/10`;
-}
-
-function mobileLinkClass(key: NavSection): string {
-	if (activeNav !== key) return '';
-	return 'bg-primary/15 font-semibold text-primary';
-}
 ---
 
-<header class="sticky top-0 z-50 border-b border-base-300 bg-base-200/80 backdrop-blur">
-	<SiteContainer class="flex min-h-16 items-center gap-2">
+<header
+	class="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur"
+	data-print="hide"
+	transition:name="site-header"
+>
+	<SiteContainer class="flex min-h-14 items-center gap-3">
 		<div class="flex-1">
 			<BrandLockup variant="header" />
 		</div>
-		<nav class="hidden flex-none gap-1 sm:flex" aria-label="Main">
-		<a
-			class={desktopNavClass('home')}
-			href={h('')}
-			data-nav="home"
-			data-nav-kind="desktop"
-			aria-current={activeNav === 'home' ? 'page' : undefined}
-		>
-			{t(loc, 'nav.home')}
-		</a>
-		<a
-			class={desktopNavClass('about')}
-			href={h('about')}
-			data-nav="about"
-			data-nav-kind="desktop"
-			aria-current={activeNav === 'about' ? 'page' : undefined}
-		>
-			{t(loc, 'nav.about')}
-		</a>
-		<a
-			class={desktopNavClass('resume')}
-			href={h('resume')}
-			data-nav="resume"
-			data-nav-kind="desktop"
-			aria-current={activeNav === 'resume' ? 'page' : undefined}
-		>
-			{t(loc, 'nav.resume')}
-		</a>
-		<a
-			class={desktopNavClass('products')}
-			href={h('products')}
-			data-nav="products"
-			data-nav-kind="desktop"
-			aria-current={activeNav === 'products' ? 'page' : undefined}
-		>
-			{t(loc, 'nav.products')}
-		</a>
-		<a
-			class={desktopNavClass('support')}
-			href={h('support')}
-			data-nav="support"
-			data-nav-kind="desktop"
-			aria-current={activeNav === 'support' ? 'page' : undefined}
-		>
-			{t(loc, 'nav.support')}
-		</a>
-	</nav>
-	<div class="flex flex-none items-center gap-2">
-		<div class="dropdown dropdown-end sm:hidden">
-			<div
-				tabindex="0"
-				role="button"
-				class="btn btn-ghost btn-circle"
-				aria-label={t(loc, 'nav.menu')}
-				aria-haspopup="true"
+
+		<nav class="hidden items-center gap-1 sm:flex" aria-label={t(loc, 'palette.pages')}>
+			{
+				HEADER_SECTIONS.map((s) => (
+					<a
+						href={hrefForLocale(loc, s.segment)}
+						class="site-nav-link"
+						data-nav={s.id}
+						data-ga-event="select_content"
+						data-ga-params={JSON.stringify({
+							content_type: 'nav',
+							content_id: s.id,
+							link_location: 'header',
+						})}
+						data-active={activeNav === s.id ? '' : undefined}
+						aria-current={activeNav === s.id ? 'page' : undefined}
+					>
+						{t(loc, s.labelKey)}
+					</a>
+				))
+			}
+		</nav>
+
+		<div class="flex items-center gap-1.5">
+			<button
+				type="button"
+				data-palette-open
+				class="inline-flex items-center gap-1.5 rounded-md border border-line px-2 py-1.5 font-mono text-xs text-muted transition-colors duration-150 hover:border-accent hover:text-accent"
+				aria-label={t(loc, 'palette.open')}
 			>
+				<span data-kbd-ctrl aria-hidden="true">Ctrl K</span>
+				<span data-kbd-mac aria-hidden="true">⌘K</span>
 				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-5 w-5"
-					fill="none"
+					data-kbd-touch
 					viewBox="0 0 24 24"
+					width="14"
+					height="14"
+					fill="none"
 					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
 					aria-hidden="true"
 				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M4 6h16M4 12h16M4 18h16"></path>
+					<circle cx="11" cy="11" r="7"></circle>
+					<path d="M20 20l-4.7-4.7"></path>
 				</svg>
-			</div>
-			<ul
-				tabindex="0"
-				class="dropdown-content menu z-[200] mt-1 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-lg"
-				aria-label="Main"
+			</button>
+
+			<a
+				href={hrefForLocale(next, segment)}
+				class="rounded-md border border-line px-2 py-1.5 text-xs font-medium text-muted transition-colors duration-150 hover:border-accent hover:text-accent"
+				data-ga-event="language_switch"
+				data-ga-params={JSON.stringify({ language: next })}
+				aria-label={t(loc, 'nav.langSwitchAria')}
 			>
-				<li>
-					<a
-						class={mobileLinkClass('home')}
-						href={h('')}
-						data-nav="home"
-						data-nav-kind="mobile"
-						aria-current={activeNav === 'home' ? 'page' : undefined}
-					>
-						{t(loc, 'nav.home')}
-					</a>
-				</li>
-				<li>
-					<a
-						class={mobileLinkClass('about')}
-						href={h('about')}
-						data-nav="about"
-						data-nav-kind="mobile"
-						aria-current={activeNav === 'about' ? 'page' : undefined}
-					>
-						{t(loc, 'nav.about')}
-					</a>
-				</li>
-				<li>
-					<a
-						class={mobileLinkClass('resume')}
-						href={h('resume')}
-						data-nav="resume"
-						data-nav-kind="mobile"
-						aria-current={activeNav === 'resume' ? 'page' : undefined}
-					>
-						{t(loc, 'nav.resume')}
-					</a>
-				</li>
-				<li>
-					<a
-						class={mobileLinkClass('products')}
-						href={h('products')}
-						data-nav="products"
-						data-nav-kind="mobile"
-						aria-current={activeNav === 'products' ? 'page' : undefined}
-					>
-						{t(loc, 'nav.products')}
-					</a>
-				</li>
-				<li>
-					<a
-						class={mobileLinkClass('support')}
-						href={h('support')}
-						data-nav="support"
-						data-nav-kind="mobile"
-						aria-current={activeNav === 'support' ? 'page' : undefined}
-					>
-						{t(loc, 'nav.support')}
-					</a>
-				</li>
-			</ul>
+				{t(loc, 'nav.langSwitch')}
+			</a>
+
+			<ThemeToggle />
 		</div>
-		<a
-			class="btn btn-ghost btn-sm inline-flex h-9 min-h-9 items-center justify-center gap-2 border-2 border-primary/35 bg-base-100/50 px-3 hover:border-primary/50 hover:bg-base-300/25"
-			href={nextHref}
-			hreflang={next}
-			lang={next}
-			title={nextLabel}
-			aria-label={nextLabel}
-		>
-			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 0c2.5 2 5 7.5 5 10s-2.5 8-5 8-5-5.5-5-8 2.5-8 5-8zm0 0v20m10-10H2" />
-			</svg>
-			{next.toUpperCase()}
-		</a>
-		<ThemeToggle />
-	</div>
 	</SiteContainer>
 </header>
 
-<script>
-	import { navSectionFromPathname } from '../../i18n/path-utils';
-
-	const DESKTOP_ACTIVE =
-		'btn btn-ghost btn-sm bg-primary/15 font-semibold text-primary ring-1 ring-primary/30 shadow-sm shadow-primary/10';
-	const DESKTOP_IDLE = 'btn btn-ghost btn-sm';
-	const MOBILE_ACTIVE = 'bg-primary/15 font-semibold text-primary';
-
-	function syncNavHighlight() {
-		const active = navSectionFromPathname(window.location.pathname);
-		document.querySelectorAll<HTMLElement>('[data-nav]').forEach((el) => {
-			const key = el.dataset.nav;
-			const kind = el.dataset.navKind;
-			const isActive = active === key;
-			if (kind === 'desktop') {
-				el.className = isActive ? DESKTOP_ACTIVE : DESKTOP_IDLE;
-			} else if (kind === 'mobile') {
-				el.className = isActive ? MOBILE_ACTIVE : '';
-			}
-			if (isActive) el.setAttribute('aria-current', 'page');
-			else el.removeAttribute('aria-current');
-		});
+<style>
+	.site-nav-link {
+		border-radius: 0.375rem;
+		padding: 0.375rem 0.625rem;
+		font-size: 0.875rem;
+		line-height: 1.25rem;
+		color: var(--muted);
+		transition: color 150ms ease;
+	}
+	.site-nav-link:hover {
+		color: var(--ink);
+	}
+	/* The single definition of "active". The client script only toggles the
+	   attribute after a view transition; it never rewrites class names. */
+	.site-nav-link[data-active] {
+		color: var(--ink);
+		font-weight: 500;
+		box-shadow: inset 0 -2px 0 0 var(--accent);
 	}
 
-	syncNavHighlight();
-	document.addEventListener('astro:page-load', syncNavHighlight);
-</script>
+	/* Which palette hint shows is decided here alone. `data-kbd` is set on <html>
+	   before first paint in BaseLayout and carried across view transitions, the
+	   same way `data-theme` is; no JS touches the button. `Ctrl K` is the default
+	   so the button is never empty when the attribute is missing (JS disabled). */
+	[data-kbd-mac],
+	[data-kbd-touch] {
+		display: none;
+	}
+	:root[data-kbd='mac'] [data-kbd-ctrl],
+	:root[data-kbd='touch'] [data-kbd-ctrl] {
+		display: none;
+	}
+	:root[data-kbd='mac'] [data-kbd-mac] {
+		display: inline;
+	}
+	:root[data-kbd='touch'] [data-kbd-touch] {
+		display: block;
+	}
+</style>

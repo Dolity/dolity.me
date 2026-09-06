@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../../components/layout/BaseLayout.astro';
+import ProductDetail from '../../../components/products/ProductDetail.astro';
+import { getProductsSorted } from '../../../data/products-catalog';
+
+export const prerender = true;
+
+/** One page per catalog entry — adding a product needs no new file. */
+export function getStaticPaths() {
+	return getProductsSorted().map((item) => ({
+		params: { slug: item.slug },
+		props: { item },
+	}));
+}
+
+const loc = 'en';
+const { item } = Astro.props;
+---
+
+<BaseLayout
+	title={item.title[loc]}
+	description={item.summary[loc]}
+	seoPath={`products/${item.slug}`}
+>
+	<ProductDetail item={item} loc={loc} />
+</BaseLayout>

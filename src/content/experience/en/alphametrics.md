@@ -5,5 +5,5 @@ period: Dec 2023 – Mar 2024
 location: Saraburi, Thailand · On-site
 order: 2
 ---
-- Supported **pre-go-live testing** before production rollout.
-- Learned how bank-side **FX** and **money market (MM)** concepts fit into the systems we tested.
+- Tested systems ahead of production releases: wrote cases and chased down failures before customers hit them.
+- Learned how bank-side systems fit together, particularly where FX and money market concepts touch the software we were testing.

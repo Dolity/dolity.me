@@ -8,38 +8,67 @@ import {
 	SITE_BRAND_SRC,
 	SITE_WEB_MANIFEST,
 } from '../../constants/site-assets';
+import { RESUME_GITHUB_URL, RESUME_LINKEDIN_URL } from '../../constants/social';
+import { isIndexableSegment, t, toLocale } from '../../i18n';
 
 interface Props {
 	title: string;
 	description: string;
 	/** Path without locale prefix e.g. "", "about", "products/billing" */
 	seoPath?: string;
+	/** Public path to a page-specific share card; falls back to the brand image. */
+	ogImage?: string;
+	/** Override the route's default indexability (see `isIndexableSegment`). */
+	noindex?: boolean;
 }
 
-const { title, description, seoPath = '' } = Astro.props;
+const {
+	title,
+	description,
+	seoPath = '',
+	ogImage: ogImageProp,
+	noindex: noindexProp,
+} = Astro.props;
+// Indexability belongs to the route, not to 22 page shells restating it. The prop
+// is only an override, for routes with no seoPath of their own (404).
+const noindex = noindexProp ?? !isIndexableSegment(seoPath);
 const pathArg = seoPath || undefined;
+const loc = toLocale(Astro.currentLocale);
 
-const ogImage = new URL(SITE_BRAND_SRC, Astro.site ?? Astro.url).href;
+// One shape for every page in both locales, so GA4's page_title groups cleanly:
+// "About | Dolity (EN)". The locale tag is what separates the two rows — several
+// page names are identical across locales. Share cards keep the bare `title`.
+const docTitle = `${title} | ${t(loc, 'site.name')} (${loc.toUpperCase()})`;
+
+const ogImage = new URL(ogImageProp ?? SITE_BRAND_SRC, Astro.site ?? Astro.url).href;
 
 const localeCodes = ['th', 'en'] as const;
-const alternates = localeCodes.map((loc) => ({
-	href: getAbsoluteLocaleUrl(loc, pathArg),
-	hreflang: loc,
+const alternates = localeCodes.map((code) => ({
+	href: getAbsoluteLocaleUrl(code, pathArg),
+	hreflang: code,
 }));
 
 const canonical = getAbsoluteLocaleUrl(Astro.currentLocale ?? 'th', pathArg);
 
-const siteOrigin = Astro.site?.href ?? 'https://dolity.me/';
-const xDefaultHref = seoPath
-	? getAbsoluteLocaleUrl('th', pathArg)
-	: siteOrigin;
+// Always the Thai URL. Home used to point x-default at "/", which only redirects —
+// an hreflang cluster should name the page itself, not the door to it.
+const xDefaultHref = getAbsoluteLocaleUrl('th', pathArg);
 
+// The Person is the human, not the brand: `name` was "Dolity" and `sameAs`
+// pointed at his own subdomains, which told search engines nothing about him.
 const personJsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'Person',
-	name: 'Dolity',
+	name: 'Jakkrit Faijampa',
+	alternateName: ['จักรกฤษณ์ ฝ่ายจำปา', 'Dodo', 'Dolity'],
+	jobTitle: 'Software Engineer',
 	url: Astro.site?.href ?? 'https://dolity.me',
-	sameAs: ['https://shorturl.dolity.me', 'https://bill.dolity.me'],
+	image: new URL('/profile_dlt_dev.png', Astro.site ?? Astro.url).href,
+	sameAs: [RESUME_LINKEDIN_URL, RESUME_GITHUB_URL],
+	alumniOf: {
+		'@type': 'CollegeOrUniversity',
+		name: 'Mahasarakham University',
+	},
 	knowsLanguage: ['th', 'en'],
 };
 ---
@@ -53,18 +82,21 @@ const personJsonLd = {
 <link rel="manifest" href={SITE_WEB_MANIFEST} />
 <meta name="generator" content={Astro.generator} />
 
-<title>{title}</title>
+<title>{docTitle}</title>
 <meta name="description" content={description} />
-<link rel="canonical" href={canonical} />
-
-{alternates.map((a) => (
-	<link rel="alternate" hreflang={a.hreflang} href={a.href} />
-))}
-<link
-	rel="alternate"
-	hreflang="x-default"
-	href={xDefaultHref}
-/>
+{
+	noindex ? (
+		<meta name="robots" content="noindex, follow" />
+	) : (
+		<Fragment>
+			<link rel="canonical" href={canonical} />
+			{alternates.map((a) => (
+				<link rel="alternate" hreflang={a.hreflang} href={a.href} />
+			))}
+			<link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+		</Fragment>
+	)
+}
 
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />
@@ -73,7 +105,10 @@ const personJsonLd = {
 <meta property="og:image" content={ogImage} />
 <meta property="og:locale" content={Astro.currentLocale === 'en' ? 'en_US' : 'th_TH'} />
 
-<meta name="twitter:card" content="summary_large_image" />
+<!-- `summary`, not `summary_large_image`: the share images are square (brand mark,
+     1024x1024) and portrait (profile photo, 1024x1536). A large card crops to
+     1.91:1 and would slice both. -->
+<meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />

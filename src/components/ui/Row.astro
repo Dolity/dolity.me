@@ -1,0 +1,67 @@
+---
+/**
+ * One line of a directory listing. Replaces the grid of identical rounded
+ * cards — a list of things you can open reads better as a list.
+ *
+ * `▸` marks a navigable child, `↗` marks a link that leaves the site. Both are
+ * mono glyphs carrying meaning, not decoration.
+ */
+interface Props {
+	href: string;
+	name: string;
+	title: string;
+	desc?: string;
+	meta?: string;
+	external?: boolean;
+	gaEvent?: string;
+	gaParams?: Record<string, string | number | boolean>;
+	class?: string;
+}
+
+const {
+	href,
+	name,
+	title,
+	desc,
+	meta,
+	external = false,
+	gaEvent,
+	gaParams,
+	class: className,
+} = Astro.props;
+---
+
+<a
+	href={href}
+	class:list={[
+		'group/row flex flex-col gap-1 border-b border-line px-2 py-4 transition-colors duration-150',
+		'hover:bg-surface-2 sm:flex-row sm:items-baseline sm:gap-4',
+		className,
+	]}
+	data-ga-event={gaEvent}
+	data-ga-params={gaParams ? JSON.stringify(gaParams) : undefined}
+	target={external ? '_blank' : undefined}
+	rel={external ? 'noopener noreferrer' : undefined}
+>
+	<span class="flex shrink-0 items-baseline gap-2 font-mono text-sm text-accent">
+		<span
+			class="transition-transform duration-150 group-hover/row:translate-x-0.5"
+			aria-hidden="true">▸</span
+		>
+		<span class="text-ink">{name}</span>
+	</span>
+
+	<span class="min-w-0 flex-1">
+		<span class="block font-medium text-ink">{title}</span>
+		{desc && <span class="mt-0.5 block text-sm leading-relaxed text-muted">{desc}</span>}
+	</span>
+
+	{
+		meta && (
+			<span class="shrink-0 font-mono text-xs text-muted">
+				{meta}
+				{external && <span aria-hidden="true"> ↗</span>}
+			</span>
+		)
+	}
+</a>

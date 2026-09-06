@@ -1,55 +1,117 @@
 ---
+import { getProductsSorted } from '../../data/products-catalog';
+import { hrefForLocale, NAV_SECTIONS, t, toLocale } from '../../i18n';
+import { CONTACT_EMAIL, RESUME_GITHUB_URL, RESUME_LINKEDIN_URL } from '../../constants/social';
 import BrandLockup from './BrandLockup.astro';
 import SiteContainer from './SiteContainer.astro';
-import { hrefForLocale, t } from '../../i18n';
 
-const raw = Astro.currentLocale ?? 'th';
-const loc = raw === 'en' ? 'en' : 'th';
-const h = (s: string) => hrefForLocale(loc, s);
+const loc = toLocale(Astro.currentLocale);
+const products = getProductsSorted().filter((p) => p.prodUrl && p.id !== 'dolity');
+
+const elsewhere = [
+	{ label: 'GitHub', href: RESUME_GITHUB_URL, id: 'github' },
+	{ label: 'LinkedIn', href: RESUME_LINKEDIN_URL, id: 'linkedin' },
+	{ label: 'Email', href: `mailto:${CONTACT_EMAIL}`, id: 'email' },
+];
 ---
 
-<footer class="border-t border-base-300 bg-base-200 py-10">
-	<SiteContainer class="flex flex-col gap-6 sm:flex-row sm:justify-between">
-		<div class="flex max-w-md flex-col gap-3 sm:flex-row sm:items-start sm:gap-4">
-			<div class="flex flex-col gap-3">
-				<BrandLockup variant="footer" />
-				<p class="text-sm opacity-80">{t(loc, 'footer.tagline')}</p>
-			</div>
+<footer class="border-t border-line bg-surface" data-print="hide">
+	<SiteContainer class="grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
+		<div class="space-y-3">
+			<BrandLockup variant="footer" />
+			<p class="max-w-xs text-sm leading-relaxed text-muted">{t(loc, 'site.tagline')}</p>
 		</div>
-		<div>
-			<p class="mb-2 text-sm font-medium">{t(loc, 'footer.products')}</p>
-			<ul class="flex flex-col gap-2 text-sm">
-				<li>
-					<a class="link link-hover" href={h('products/url-shortener')}>
-						{t(loc, 'footer.shorturl')}
-					</a>
-					<span class="mx-1 opacity-50">·</span>
-					<a
-						class="link link-primary"
-						href="https://shorturl.dolity.me/"
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						shorturl.dolity.me
-					</a>
-				</li>
-				<li>
-					<a class="link link-hover" href={h('products/billing')}>
-						{t(loc, 'footer.bill')}
-					</a>
-					<span class="mx-1 opacity-50">·</span>
-					<a
-						class="link link-primary"
-						href="https://bill.dolity.me/"
-						rel="noopener noreferrer"
-						target="_blank"
-					>
-						bill.dolity.me
-					</a>
-				</li>
+
+		<nav aria-labelledby="footer-pages">
+			<h2 id="footer-pages" class="font-mono text-xs uppercase text-muted">
+				{t(loc, 'footer.pages')}
+			</h2>
+			<ul class="mt-3 space-y-2">
+				{
+					NAV_SECTIONS.filter((s) => s.id !== 'home').map((s) => (
+						<li>
+							<a
+								href={hrefForLocale(loc, s.segment)}
+								class="text-sm text-ink transition-colors duration-150 hover:text-accent"
+								data-ga-event="select_content"
+								data-ga-params={JSON.stringify({
+									content_type: 'nav',
+									content_id: s.id,
+									link_location: 'footer',
+								})}
+							>
+								{t(loc, s.labelKey)}
+							</a>
+						</li>
+					))
+				}
 			</ul>
-			<p class="mt-4 mb-2 text-sm font-medium">{t(loc, 'footer.support')}</p>
-			<a class="link link-hover text-sm" href={h('support')}>{t(loc, 'support.title')}</a>
-		</div>
+		</nav>
+
+		<nav aria-labelledby="footer-products">
+			<h2 id="footer-products" class="font-mono text-xs uppercase text-muted">
+				{t(loc, 'footer.products')}
+			</h2>
+			<ul class="mt-3 space-y-2">
+				{
+					products.map((p) => (
+						<li>
+							<a
+								href={p.prodUrl!}
+								target="_blank"
+								rel="noopener noreferrer"
+								data-ga-event="select_content"
+								data-ga-params={JSON.stringify({
+									content_type: 'product_site',
+									content_id: p.slug,
+									link_location: 'footer',
+								})}
+								class="inline-flex items-baseline gap-1.5 text-sm text-ink transition-colors duration-150 hover:text-accent"
+							>
+								{new URL(p.prodUrl!).hostname}
+								<span class="font-mono text-xs text-muted" aria-hidden="true">
+									↗
+								</span>
+								<span class="sr-only">({t(loc, 'footer.external')})</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+
+		<nav aria-labelledby="footer-elsewhere">
+			<h2 id="footer-elsewhere" class="font-mono text-xs uppercase text-muted">
+				{t(loc, 'footer.elsewhere')}
+			</h2>
+			<ul class="mt-3 space-y-2">
+				{
+					elsewhere.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								class="text-sm text-ink transition-colors duration-150 hover:text-accent"
+								data-ga-event={link.id === 'email' ? 'generate_lead' : 'select_content'}
+								data-ga-params={JSON.stringify(
+									link.id === 'email'
+										? { method: 'email', link_location: 'footer' }
+										: {
+												content_type: 'social_profile',
+												content_id: link.id,
+												link_location: 'footer',
+											},
+								)}
+							>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</nav>
+	</SiteContainer>
+
+	<SiteContainer class="border-t border-line py-4">
+		<p class="font-mono text-xs text-muted">{t(loc, 'footer.builtWith')}</p>
 	</SiteContainer>
 </footer>

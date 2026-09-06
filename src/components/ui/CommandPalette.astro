@@ -1,0 +1,92 @@
+---
+/**
+ * ⌘K — the one interaction bet on this site.
+ *
+ * Built on a native <dialog>, so the focus trap, Esc-to-close, backdrop, and
+ * inertness of the page behind it all come from the platform. No library.
+ */
+import { getProductsSorted } from '../../data/products-catalog';
+import { hrefForLocale, NAV_SECTIONS, t, toLocale } from '../../i18n';
+
+const loc = toLocale(Astro.currentLocale);
+
+const items = [
+	...NAV_SECTIONS.map((s) => ({
+		href: hrefForLocale(loc, s.segment),
+		label: t(loc, s.labelKey),
+		group: t(loc, 'palette.pages'),
+		hint: `/${loc}${s.segment ? `/${s.segment}` : ''}`,
+		external: false,
+		gaType: 'nav',
+		gaId: s.id as string,
+	})),
+	...getProductsSorted().map((p) => ({
+		href: hrefForLocale(loc, `products/${p.slug}`),
+		label: p.title[loc],
+		group: t(loc, 'palette.products'),
+		hint: p.prodUrl ? new URL(p.prodUrl).hostname : p.slug,
+		external: false,
+		gaType: 'product_detail',
+		gaId: p.slug,
+	})),
+];
+---
+
+<dialog
+	id="dolity-palette"
+	class="m-auto w-[min(34rem,calc(100vw-2rem))] rounded-lg border border-line bg-surface p-0 text-ink shadow-[var(--shadow)] backdrop:bg-black/50 backdrop:backdrop-blur-sm"
+	aria-label={t(loc, 'palette.title')}
+>
+	<form method="dialog" class="contents">
+		<div class="flex items-center gap-2 border-b border-line px-4 py-3">
+			<span class="font-mono text-sm font-semibold text-accent" aria-hidden="true">$</span>
+			<input
+				id="dolity-palette-input"
+				type="search"
+				autocomplete="off"
+				placeholder={t(loc, 'palette.placeholder')}
+				aria-label={t(loc, 'palette.title')}
+				class="w-full bg-transparent text-sm outline-none placeholder:text-muted"
+			/>
+			<button
+				type="submit"
+				class="rounded border border-line px-1.5 py-0.5 font-mono text-[0.6875rem] text-muted"
+				aria-label={t(loc, 'nav.close')}>Esc</button
+			>
+		</div>
+	</form>
+
+	<ul id="dolity-palette-list" class="max-h-[60vh] overflow-y-auto p-2">
+		{
+			items.map((item, i) => (
+				<li data-palette-item data-label={item.label.toLowerCase()} data-hint={item.hint}>
+					<a
+						href={item.href}
+						class="flex items-baseline gap-3 rounded px-2 py-2 text-sm hover:bg-surface-2 aria-[current=true]:bg-surface-2"
+						data-ga-event="select_content"
+						data-ga-params={JSON.stringify({
+							content_type: item.gaType,
+							content_id: item.gaId,
+							link_location: 'command_palette',
+						})}
+						aria-current={i === 0 ? 'true' : undefined}
+					>
+						<span class="font-mono text-accent" aria-hidden="true">
+							▸
+						</span>
+						<span class="flex-1 truncate">{item.label}</span>
+						<span class="shrink-0 font-mono text-xs text-muted">{item.hint}</span>
+					</a>
+				</li>
+			))
+		}
+	</ul>
+
+	<p id="dolity-palette-empty" class="hidden px-4 py-6 text-sm text-muted">
+		{t(loc, 'palette.empty')}
+	</p>
+
+	<p class="border-t border-line px-4 py-2 font-mono text-[0.6875rem] text-muted">
+		{t(loc, 'palette.hint')}
+	</p>
+</dialog>

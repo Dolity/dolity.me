@@ -1,19 +1,28 @@
 /**
- * Product catalog for /products — bilingual copy + Simple Icons slugs
- * @see https://simpleicons.org/ — CDN: https://cdn.simpleicons.org/{slug}
+ * Product catalog for /products — bilingual copy + tech badges.
+ * @see ./tech-icons for the `slug` values a badge may use.
  */
 
-import { FAVICON_PNG_96 } from '../constants/site-assets';
+import {
+	FAVICON_PNG_96,
+	HANBO_LOGO_SRC,
+	PHIBOON_TOUR_LOGO_SRC,
+	YORBO_LOGO_SRC,
+} from '../constants/site-assets';
+import type { TechIconSlug } from './tech-icons';
+import type { Locale } from '../i18n/path-utils';
 
-export type Locale = 'th' | 'en';
+export type { Locale };
 
-export type TechBadge = { label: string; slug?: string };
+export type TechBadge = { label: string; slug?: TechIconSlug };
 
 export type ProductCatalogItem = {
+	/** Anchor target on the catalog page (`#product-<id>`). Stable — do not rename. */
 	id: string;
+	/** URL segment for the detail page: /{loc}/products/<slug>. Stable — do not rename. */
+	slug: string;
 	order: number;
 	prodUrl: string | null;
-	detailPath: string | null;
 	/** Public path e.g. `/yorbo-logo.png` */
 	logoSrc?: string;
 	period: Record<Locale, string>;
@@ -29,9 +38,9 @@ const catalog: ProductCatalogItem[] = [
 		id: 'yorbo',
 		order: 1,
 		prodUrl: 'https://shorturl.dolity.me/',
-		detailPath: 'products/url-shortener',
-		logoSrc: '/yorbo-logo.png',
-		period: { th: 'เม.ย 2568 – ปัจจุบัน', en: 'Apr 2025 – Present' },
+		slug: 'url-shortener',
+		logoSrc: YORBO_LOGO_SRC,
+		period: { th: 'เม.ย. 2568 – ปัจจุบัน', en: 'Apr 2025 – Present' },
 		badge: { th: 'Product', en: 'Product' },
 		title: { th: 'Yorbo — ย่อลิงก์ & QR', en: 'Yorbo — short links & QR' },
 		summary: {
@@ -71,11 +80,11 @@ const catalog: ProductCatalogItem[] = [
 		id: 'hanbo',
 		order: 2,
 		prodUrl: 'https://bill.dolity.me/',
-		detailPath: 'products/billing',
-		logoSrc: '/hanbo-logo.png',
+		slug: 'billing',
+		logoSrc: HANBO_LOGO_SRC,
 		period: { th: 'ก.ย. 2568 – ปัจจุบัน', en: 'Sep 2025 – Present' },
 		badge: { th: 'Product', en: 'Product' },
-		title: { th: 'Hanbo — หารบิล (Bill splitter)', en: 'Hanbo — bill splitter' },
+		title: { th: 'Hanbo — หารบิล', en: 'Hanbo — bill splitter' },
 		summary: {
 			th: 'แอปหารบิลบนเว็บ: สแกนใบเสร็จ (OCR) สร้าง QR PromptPay แจ้งเตือน FCM รองรับ Service Charge / VAT โฮสต์ที่ bill.dolity.me',
 			en: 'Split bills on the web: receipt OCR, PromptPay QR, FCM reminders, optional service charge/VAT—hosted at bill.dolity.me.',
@@ -98,34 +107,34 @@ const catalog: ProductCatalogItem[] = [
 		},
 		tech: [
 			{ slug: 'nuxt', label: 'Nuxt 4' },
-			{ slug: 'vuedotjs', label: 'Vue' },
+			{ slug: 'vuedotjs', label: 'Vue.js' },
 			{ slug: 'typescript', label: 'TypeScript' },
 			{ slug: 'tailwindcss', label: 'Tailwind CSS' },
-			{ slug: 'daisyui', label: 'DaisyUI' },
+			{ slug: 'daisyui', label: 'daisyUI' },
 			{ slug: 'bun', label: 'Bun' },
 			{ slug: 'drizzle', label: 'Drizzle ORM' },
 			{ slug: 'cloudflare', label: 'Cloudflare' },
 			{ slug: 'firebase', label: 'Firebase (FCM)' },
 			{ slug: 'pinia', label: 'Pinia' },
-			{ slug: 'google', label: 'Gemini (OCR)' },
+			{ slug: 'googlegemini', label: 'Gemini (OCR)' },
 		],
 	},
 	{
 		id: 'phiboontour',
+		slug: 'phiboon-tour',
 		order: 3,
 		prodUrl: 'https://phiboontour.com/',
-		detailPath: null,
-		logoSrc: '/phiboon-tour-logo.png',
+		logoSrc: PHIBOON_TOUR_LOGO_SRC,
 		period: { th: 'ธ.ค. 2568 – ปัจจุบัน', en: 'Dec 2025 – Present' },
 		badge: { th: 'Product', en: 'Product' },
-		title: { th: 'Phiboon Tour (ภิบูรณ์ทัวร์)', en: 'Phiboon Tour' },
+		title: { th: 'ภิบูรณ์ทัวร์', en: 'Phiboon Tour' },
 		summary: {
 			th: 'เว็บไซต์โปรโมตบริการรถตู้ สายอุดรธานี–กรุงเทพ–ชลบุรี–ระยอง รองรับผู้โดยสาร ขนส่งมอเตอร์ไซค์ และขนส่งสินค้า',
 			en: 'Landing site for Phiboon Tour van routes across Udon Thani, Bangkok, Chonburi, and Rayong—passenger, bike, and cargo.',
 		},
 		highlights: {
 			th: [
-				'รับส่งผู้โดยสาย รถตู้ปรับอากาศ',
+				'รับส่งผู้โดยสาร รถตู้ปรับอากาศ',
 				'บริการขนส่งมอเตอร์ไซค์และสินค้าทั่วไป',
 				'สองภาษาไทย/อังกฤษ โหมดมืด/สว่าง',
 				'แกลเลอรีภาพ แบบ carousel และ lightbox',
@@ -141,7 +150,7 @@ const catalog: ProductCatalogItem[] = [
 		},
 		tech: [
 			{ slug: 'nuxt', label: 'Nuxt 4' },
-			{ slug: 'vuedotjs', label: 'Vue' },
+			{ slug: 'vuedotjs', label: 'Vue.js' },
 			{ slug: 'typescript', label: 'TypeScript' },
 			{ slug: 'tailwindcss', label: 'Tailwind CSS' },
 			{ label: 'Nuxt UI' },
@@ -149,47 +158,42 @@ const catalog: ProductCatalogItem[] = [
 	},
 	{
 		id: 'dolity',
+		slug: 'dolity',
 		order: 4,
 		prodUrl: 'https://dolity.me',
-		detailPath: null,
 		logoSrc: FAVICON_PNG_96,
 		period: { th: 'พ.ค. 2569 – ปัจจุบัน', en: 'May 2026 – Present' },
-		badge: { th: 'Hub / Portfolio', en: 'Hub / portfolio' },
+		badge: { th: 'Hub / Portfolio', en: 'Hub / Portfolio' },
 		title: { th: 'Dolity', en: 'Dolity' },
 		summary: {
-			th: 'เว็บหลักแบรนด์ Dolity รวมเรซูเม่ แคตตาล็อกผลิตภัณฑ์ หน้าเกี่ยวกับ และช่องสนับสนุน — โหลดเร็ว รองรับสองภาษา',
-			en: 'Dolity’s primary site: resume, product catalog, about, and support—fast, bilingual, and Cloudflare-hosted.',
+			th: 'เว็บที่คุณกำลังอ่านอยู่ รวมเรซูเม่ ผลงาน หน้าเกี่ยวกับ และช่องทางสนับสนุน — โหลดเร็ว สองภาษา',
+			en: 'The site you are on: resume, work, about, and support — fast, bilingual, and hosted on Cloudflare.',
 		},
 		highlights: {
 			th: [
-				'หน้าแรก เรซูเม่ (Markdown content) Tech stack & โปรเจกต์',
-				'หน้าผลิตภัณฑ์และลิงก์ไปแอปย่อยของแบรนด์',
-				'i18n เส้นทาง /th /en',
-				'ธีม DaisyUI สลับมืด/สว่าง',
-				'สร้างด้วย Astro 6 + deploy Cloudflare',
+				'เรซูเม่ที่แก้ได้จากไฟล์ Markdown ไม่ต้องแตะโค้ด',
+				'หน้าผลงานที่ลิงก์ไปแอปจริงบนโดเมนย่อย',
+				'สองภาษาเต็มรูปแบบ /th กับ /en',
+				'ธีมสว่าง/มืด กับ command palette กด ⌘K',
+				'prerender ทุกหน้า เสิร์ฟจาก Cloudflare edge',
 			],
 			en: [
-				'Home, resume with Markdown-backed sections and tech stack.',
-				'Product catalog with outbound links to subdomains.',
-				'Locale-prefixed routing for Thai and English.',
-				'DaisyUI themes with light/dark switching.',
-				'Astro 6 + Cloudflare adapter.',
+				'A resume you edit as Markdown, without touching components.',
+				'Work pages that link straight out to the live apps.',
+				'Fully bilingual under /th and /en.',
+				'Light and dark themes, plus a ⌘K command palette.',
+				'Every page prerendered and served from the Cloudflare edge.',
 			],
 		},
 		tech: [
 			{ slug: 'astro', label: 'Astro' },
 			{ slug: 'tailwindcss', label: 'Tailwind CSS' },
-			{ slug: 'daisyui', label: 'DaisyUI' },
 			{ slug: 'typescript', label: 'TypeScript' },
 			{ slug: 'cloudflare', label: 'Cloudflare' },
 			{ slug: 'bun', label: 'Bun' },
 		],
 	},
 ];
-
-export function getProductCatalogItem(id: string): ProductCatalogItem | undefined {
-	return catalog.find((item) => item.id === id);
-}
 
 export function getProductsSorted(): ProductCatalogItem[] {
 	return [...catalog].sort((a, b) => a.order - b.order);

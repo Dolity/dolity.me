@@ -5,8 +5,8 @@ period: Apr 2024 – Present
 location: Khon Kaen, Thailand · On-site
 order: 1
 ---
-- **Backend:** Built and maintained REST APIs with **Express.js** (Sequelize/MySQL) and **Golang** (Echo/MongoDB) for core business flows.
-- **Integrations:** Payment gateways and KYC services with dependable **webhook** handling for event-driven sync.
-- **Real-time & async:** **WebSockets**, **Redis** (pub/sub), **Bee-Queue**, and **cron** jobs for live features and background work.
-- **Frontend (CRM):** Internal dashboards with **Vue.js**, Vue Bootstrap, and **Vuex**.
-- **Ops:** Service health and troubleshooting with **Kubernetes** (**kubectl**).
+- Own the REST APIs behind the core business flows, written in Express.js (Sequelize/MySQL), with parts split out as Golang microservices (Echo/MongoDB).
+- Integrate payment and KYC providers, designing webhook handling so both sides stay consistent even when events arrive late or twice.
+- Build real-time and background features with WebSockets, Redis pub/sub, Bee-Queue, and cron jobs.
+- Build internal dashboards in Vue.js and Vuex so the team can answer their own questions instead of filing a ticket.
+- Watch service health and debug production issues through Kubernetes (kubectl).

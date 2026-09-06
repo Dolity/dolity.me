@@ -1,0 +1,56 @@
+---
+/**
+ * `$ cd ..` — where to go from here.
+ *
+ * Replaces the gradient CTA band that existed in five identical copies. It
+ * takes section ids and reads its labels from NAV_SECTIONS, so a renamed page
+ * updates here automatically.
+ */
+import { hrefForLocale, NAV_SECTIONS, t, toLocale, type NavSection } from '../../i18n';
+
+interface Props {
+	sections: readonly NavSection[];
+	class?: string;
+}
+
+const { sections, class: className } = Astro.props;
+const loc = toLocale(Astro.currentLocale);
+
+const links = sections
+	.map((id) => NAV_SECTIONS.find((s) => s.id === id))
+	.filter((s) => s !== undefined);
+---
+
+<nav
+	class:list={['border-t border-line pt-6', className]}
+	aria-label={t(loc, 'next.title')}
+	data-print="hide"
+>
+	<p class="prompt-line text-muted">{t(loc, 'cmd.next')}</p>
+	<ul class="mt-3 flex flex-wrap gap-x-6 gap-y-2">
+		{
+			links.map((s) => (
+				<li>
+					<a
+						href={hrefForLocale(loc, s.segment)}
+						class="group/next inline-flex items-baseline gap-2 text-sm text-ink transition-colors duration-150 hover:text-accent"
+						data-ga-event="select_content"
+						data-ga-params={JSON.stringify({
+							content_type: 'nav',
+							content_id: s.id,
+							link_location: 'next_steps',
+						})}
+					>
+						<span
+							class="font-mono text-accent transition-transform duration-150 group-hover/next:translate-x-0.5"
+							aria-hidden="true"
+						>
+							▸
+						</span>
+						{t(loc, s.labelKey)}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>

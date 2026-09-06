@@ -1,35 +1,30 @@
 ---
+/** The favicon "D" completes the wordmark: mark + "olity" reads as "Dolity". */
+import { Image } from 'astro:assets';
 import { FAVICON_PNG_96, SITE_WORDMARK_SUFFIX } from '../../constants/site-assets';
-import { hrefForLocale, t } from '../../i18n';
+import { hrefForLocale, t, toLocale } from '../../i18n';
 
 interface Props {
 	variant?: 'header' | 'footer';
 }
 
 const { variant = 'header' } = Astro.props;
-const raw = Astro.currentLocale ?? 'th';
-const loc = raw === 'en' ? 'en' : 'th';
-const h = (s: string) => hrefForLocale(loc, s);
-const isHeader = variant === 'header';
+const loc = toLocale(Astro.currentLocale);
 ---
 
 <a
-	href={h('')}
-	class:list={['brand-lockup group', isHeader ? 'brand-lockup--header' : 'brand-lockup--footer']}
+	href={hrefForLocale(loc, '')}
+	class:list={['group brand-lockup', `brand-lockup--${variant}`]}
+	data-ga-event="select_content"
+	data-ga-params={JSON.stringify({
+		content_type: 'nav',
+		content_id: 'home',
+		link_location: variant,
+	})}
 	aria-label={t(loc, 'site.name')}
 >
-	<span class="brand-pill">
-		<span class="brand-pill__mark" aria-hidden="true">
-			<img
-				src={FAVICON_PNG_96}
-				alt=""
-				width="96"
-				height="96"
-				class="brand-pill__img"
-				loading={isHeader ? 'eager' : 'lazy'}
-				decoding="async"
-			/>
-		</span>
-		<span class="brand-pill__text">{SITE_WORDMARK_SUFFIX}</span>
+	<span class="brand-mark">
+		<Image src={FAVICON_PNG_96} alt="" width="40" height="40" priority aria-hidden="true" loading="eager"/>
 	</span>
+	<span class="brand-lockup__text">{SITE_WORDMARK_SUFFIX}</span>
 </a>

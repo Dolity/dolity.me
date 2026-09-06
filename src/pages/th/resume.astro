@@ -7,12 +7,15 @@ import { t } from '../../i18n';
 export const prerender = true;
 
 const loc = 'th';
-const title = `${t(loc, 'resume.title')} | ${t(loc, 'site.name')}`;
-const description = t(loc, 'resume.lead');
 ---
 
-<BaseLayout title={title} description={description} seoPath="resume">
-	<div class="w-full space-y-12 lg:space-y-16">
+<BaseLayout
+	title={`${t(loc, 'resume.title')} — ${t(loc, 'resume.name')}`}
+	description={t(loc, 'resume.lead')}
+	seoPath="resume"
+	ogImage="/profile_dlt_dev.png"
+>
+	<div class="space-y-14">
 		<ResumeHeader />
 		<ResumeBody />
 	</div>

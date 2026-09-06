@@ -1,106 +1,37 @@
 ---
-import { hrefForLocale, t } from '../../i18n';
+/**
+ * The one orchestrated moment on the site: the session states itself once, on
+ * load. `.boot` staggers its children by `--i`; the whole thing is CSS, runs
+ * once, and is switched off entirely under prefers-reduced-motion.
+ */
+import Button from '../ui/Button.astro';
+import Panel from '../ui/Panel.astro';
+import { hrefForLocale, t, toLocale } from '../../i18n';
 
-const raw = Astro.currentLocale ?? 'th';
-const loc = raw === 'en' ? 'en' : 'th';
+const loc = toLocale(Astro.currentLocale);
 const h = (s: string) => hrefForLocale(loc, s);
 ---
 
-<section class="relative isolate overflow-hidden rounded-3xl border border-base-300/70 bg-base-200/30 shadow-2xl shadow-base-300/40">
-	<div
-		class="pointer-events-none absolute inset-0 opacity-[0.2]"
-		aria-hidden="true"
-		style="background-image: linear-gradient(to right, oklch(0 0 0 / 0.06) 1px, transparent 1px), linear-gradient(to bottom, oklch(0 0 0 / 0.06) 1px, transparent 1px); background-size: 28px 28px;"
-	>
-	</div>
-	<div
-		class="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-primary/25 blur-3xl"
-		aria-hidden="true"
-	>
-	</div>
-	<div
-		class="pointer-events-none absolute -bottom-28 -left-24 h-80 w-80 rounded-full bg-secondary/30 blur-3xl"
-		aria-hidden="true"
-	>
-	</div>
+<Panel label={`dolity ~/${loc}`}>
+	<div class="boot space-y-4">
+		<p class="prompt-line text-muted" style="--i: 0">{t(loc, 'cmd.whoami')}</p>
 
-	<div class="relative px-5 py-12 sm:px-10 sm:py-16 lg:px-14">
+		<div class="space-y-1" style="--i: 1">
+			<h1 class="text-2xl font-semibold tracking-tight text-ink sm:text-4xl">
+				{t(loc, 'home.name')}
+			</h1>
+			<p class="font-mono text-sm text-muted">{t(loc, 'home.role')}</p>
+		</div>
 
-		<h1 class="max-w-4xl font-bold tracking-tight">
-			<span class="block text-xl font-semibold text-base-content/80 sm:text-2xl">
-				{t(loc, 'home.hero.titlePrefix')}
-			</span>
-			<span
-				class="mt-2 block bg-gradient-to-br from-primary via-secondary to-primary bg-clip-text text-5xl text-transparent sm:text-6xl lg:text-7xl"
-			>
-				{t(loc, 'home.hero.titleBrand')}
-			</span>
-		</h1>
-
-		<p class="mt-6 max-w-2xl text-lg leading-relaxed text-base-content/85 sm:text-xl">
-			{t(loc, 'home.hero.sub')}
+		<p class="caret prose-measure text-lg text-ink sm:text-xl" style="--i: 2">
+			{t(loc, 'home.pitch')}
 		</p>
 
-		<div class="mt-10 flex flex-col gap-4">
-			<div class="flex flex-wrap justify-center gap-2 sm:justify-start">
-				<a class="btn btn-primary px-8 shadow-lg shadow-primary/25" href={h('resume')}>
-					{t(loc, 'home.hero.ctaResume')}
-				</a>
-				<a class="btn btn-outline btn-primary border-2" href={h('products')}>
-					{t(loc, 'home.hero.ctaProducts')}
-				</a>
-			</div>
-			<div class="flex flex-wrap justify-center gap-2 sm:justify-start">
-				<a class="btn btn-ghost border border-base-300/80 bg-base-100/70" href={h('about')}>
-					{t(loc, 'home.hero.ctaAbout')}
-				</a>
-				<a class="btn btn-ghost border border-base-300/80 bg-base-100/70" href={h('support')}>
-					{t(loc, 'home.hero.ctaSupport')}
-				</a>
-			</div>
+		<p class="prose-measure text-sm text-muted" style="--i: 3">{t(loc, 'home.lead')}</p>
+
+		<div class="flex flex-wrap gap-2 pt-1" style="--i: 4">
+			<Button href={h('resume')} variant="primary">{t(loc, 'home.ctaResume')}</Button>
+			<Button href={h('products')}>{t(loc, 'home.ctaProducts')}</Button>
 		</div>
 	</div>
-
-	<div
-		class="relative border-t border-base-300/60 bg-base-100/60 px-5 py-8 backdrop-blur-md sm:px-10 lg:px-14"
-	>
-		<ul class="mx-auto grid max-w-5xl gap-8 sm:grid-cols-3 sm:gap-6" aria-label={t(loc, 'home.trust.listLabel')}>
-			<li class="flex gap-4">
-				<span
-					class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/15 text-primary"
-					aria-hidden="true"
-				>
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5 10.5 6.75 14.25 10.5 20.25 4.5M3.75 13.5v4.125A2.625 2.625 0 0 0 6.375 20.25h11.25a2.625 2.625 0 0 0 2.625-2.625V13.5M3.75 13.5h16.5" /></svg>
-				</span>
-				<div>
-					<p class="font-semibold">{t(loc, 'home.trust.item1.title')}</p>
-					<p class="mt-1 text-sm leading-relaxed opacity-85">{t(loc, 'home.trust.item1.body')}</p>
-				</div>
-			</li>
-			<li class="flex gap-4">
-				<span
-					class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary/20 text-secondary"
-					aria-hidden="true"
-				>
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>
-				</span>
-				<div>
-					<p class="font-semibold">{t(loc, 'home.trust.item2.title')}</p>
-					<p class="mt-1 text-sm leading-relaxed opacity-85">{t(loc, 'home.trust.item2.body')}</p>
-				</div>
-			</li>
-			<li class="flex gap-4">
-				<span
-					class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-accent/20 text-accent-content"
-					aria-hidden="true"
-				>
-					<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" /></svg>
-				</span>
-				<div>
-					<p class="font-semibold">{t(loc, 'home.trust.item3.title')}</p>
-					<p class="mt-1 text-sm leading-relaxed opacity-85">{t(loc, 'home.trust.item3.body')}</p>
-				</div>
-			</li>
-		</ul>
-	</div>
-</section>
+</Panel>

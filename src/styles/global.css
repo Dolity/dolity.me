@@ -1,21 +1,86 @@
+/* Human voice — Thai + Latin prose, nav labels, buttons. */
 @import '@fontsource/ibm-plex-sans-thai/400.css';
 @import '@fontsource/ibm-plex-sans-thai/500.css';
 @import '@fontsource/ibm-plex-sans-thai/600.css';
 @import '@fontsource/ibm-plex-sans-thai/700.css';
 
+/* Machine voice — prompts, paths, domains, dates, key hints. Latin/symbol only. */
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-mono/600.css';
+
 @import 'tailwindcss';
 
-@theme {
-	--font-sans: 'IBM Plex Sans Thai', ui-sans-serif, system-ui, sans-serif;
+/* ---------------------------------------------------------------------------
+   Palette — grounded in the brand mark: a cobalt "D" with an ice-blue glow.
+   A blue-phosphor terminal, not the usual acid-green-on-black.
+   Light is the default; dark applies under an explicit choice OR the OS
+   preference. Every token is defined here first so nothing is dark-only.
+--------------------------------------------------------------------------- */
+:root {
+	color-scheme: light;
+
+	--bg: #f1f4f9;
+	--surface: #ffffff;
+	--surface-2: #e8edf5;
+	--ink: #0d1420;
+	--muted: #5a6577;
+	--line: #d3dae6;
+	--accent: #1e48c7;
+	--accent-ink: #ffffff;
+	--glow: rgb(30 72 199 / 0.1);
+	--shadow: 0 1px 2px rgb(13 20 32 / 0.06), 0 8px 24px -12px rgb(13 20 32 / 0.18);
 }
 
-@plugin 'daisyui' {
-	themes: pastel --default, forest --prefersdark;
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		color-scheme: dark;
+
+		--bg: #070b14;
+		--surface: #0d1526;
+		--surface-2: #121d33;
+		--ink: #dce4f2;
+		--muted: #7e8aa3;
+		--line: #1b2740;
+		--accent: #5b8cff;
+		--accent-ink: #061024;
+		--glow: rgb(91 140 255 / 0.16);
+		--shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+	}
+}
+
+:root[data-theme='dark'] {
+	color-scheme: dark;
+
+	--bg: #070b14;
+	--surface: #0d1526;
+	--surface-2: #121d33;
+	--ink: #dce4f2;
+	--muted: #7e8aa3;
+	--line: #1b2740;
+	--accent: #5b8cff;
+	--accent-ink: #061024;
+	--glow: rgb(91 140 255 / 0.16);
+	--shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+}
+
+@theme inline {
+	--color-bg: var(--bg);
+	--color-surface: var(--surface);
+	--color-surface-2: var(--surface-2);
+	--color-ink: var(--ink);
+	--color-muted: var(--muted);
+	--color-line: var(--line);
+	--color-accent: var(--accent);
+	--color-accent-ink: var(--accent-ink);
+
+	--font-sans: 'IBM Plex Sans Thai', ui-sans-serif, system-ui, sans-serif;
+	--font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', 'Menlo', monospace;
 }
 
 @utility container {
 	width: 100%;
-	max-width: 80rem;
+	max-width: 72rem;
 	margin-inline: auto;
 	padding-inline: 1rem;
 
@@ -28,50 +93,209 @@
 	}
 }
 
-/* “D” from favicon + “olity” — capsule lockup (balanced wordmark) */
+/* Prose measure. Thai needs more leading than Latin at the same size. */
+@utility prose-measure {
+	max-width: 68ch;
+	line-height: 1.75;
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: var(--bg);
+	color: var(--ink);
+}
+
+/* One focus treatment for the whole site. */
+:where(a, button, [tabindex], summary, input, dialog):focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+::selection {
+	background: var(--accent);
+	color: var(--accent-ink);
+}
+
+/* ---------------------------------------------------------------------------
+   Terminal vernacular
+   `$` = the machine speaking. `▸` = a navigable child. `↗` = leaves the site.
+   These carry meaning, so they are markup-driven, not decorative.
+--------------------------------------------------------------------------- */
+.prompt-line {
+	@apply flex items-baseline gap-2 font-mono text-sm;
+}
+.prompt-line::before {
+	content: '$';
+	color: var(--accent);
+	font-weight: 600;
+}
+
+/* The blinking block cursor. The only always-on motion, and it is one glyph. */
+.caret::after {
+	content: '▊';
+	color: var(--accent);
+	margin-inline-start: 0.15em;
+	animation: caret 1.05s steps(1) infinite;
+}
+
+@keyframes caret {
+	0%,
+	50% {
+		opacity: 1;
+	}
+	50.01%,
+	100% {
+		opacity: 0;
+	}
+}
+
+/* The one orchestrated moment: the home hero states itself once, on load.
+   Staggered via --i on each line. No JS, no library. */
+.boot > * {
+	animation: boot-in 0.42s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+	animation-delay: calc(var(--i, 0) * 110ms);
+}
+
+@keyframes boot-in {
+	from {
+		opacity: 0;
+		transform: translateY(0.4rem);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+/* ---------------------------------------------------------------------------
+   Brand lockup — favicon "D" completes the wordmark "olity".
+--------------------------------------------------------------------------- */
 .brand-lockup {
-	@apply inline-flex shrink-0 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/45 focus-visible:ring-offset-2 focus-visible:ring-offset-base-200;
+	@apply inline-flex shrink-0 items-center gap-2;
 }
-.brand-pill {
-	@apply inline-flex items-center gap-0.5 rounded-full border border-base-300/80 bg-base-100 py-1 pl-1 pr-2.5 shadow-sm transition-[border-color,box-shadow,background-color] duration-200 sm:gap-1 sm:pr-3;
+.brand-mark {
+	@apply flex shrink-0 items-center justify-center overflow-hidden rounded-md;
+	background: var(--surface-2);
+	box-shadow: inset 0 0 0 1px var(--line);
+	transition: box-shadow 160ms ease;
 }
-.group:hover .brand-pill,
-.group:focus-visible .brand-pill {
-	@apply border-primary/35 bg-base-100 shadow;
+.brand-lockup__text {
+	@apply font-mono font-semibold tracking-tight;
+	color: var(--ink);
 }
-.brand-pill__mark {
-	@apply flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-base-200 ring-1 ring-base-300/60 sm:size-10;
-}
-.brand-pill__img {
-	@apply size-[72%] object-contain object-center sm:size-[74%];
-}
-
-/* Header: icon height tracks type size (~1:1 with cap / line box) */
-.brand-lockup--header .brand-pill__text {
-	@apply -ml-px pr-0.5 text-[0.9375rem] font-semibold leading-none tracking-tighter text-base-content antialiased sm:text-[1.0625rem] md:text-lg;
+.group:hover .brand-mark,
+.group:focus-visible .brand-mark {
+	box-shadow: inset 0 0 0 1px var(--accent);
 }
 
-/* Footer: one step larger, same ratio */
-.brand-lockup--footer .brand-pill {
-	@apply gap-0.5 py-1.5 pl-1.5 pr-2.5 sm:gap-1 sm:pr-3;
+.brand-lockup--header .brand-mark {
+	@apply size-7;
 }
-.brand-lockup--footer .brand-pill__mark {
-	@apply size-10 sm:size-[2.625rem];
+.brand-lockup--header .brand-mark img {
+	@apply size-[78%] object-contain;
 }
-.brand-lockup--footer .brand-pill__img {
-	@apply size-[74%] sm:size-[72%];
-}
-.brand-lockup--footer .brand-pill__text {
-	@apply -ml-px pr-0.5 text-lg font-semibold leading-none tracking-tighter text-base-content antialiased sm:text-xl;
+.brand-lockup--header .brand-lockup__text {
+	@apply text-[0.9375rem] sm:text-base;
 }
 
-html[data-theme='forest'] .brand-pill {
-	@apply border-base-content/15 bg-base-300/50 shadow-[0_1px_2px_rgb(0_0_0_/_0.2)];
+.brand-lockup--footer .brand-mark {
+	@apply size-8;
 }
-html[data-theme='forest'] .brand-pill__mark {
-	@apply bg-base-100/25 ring-base-content/12;
+.brand-lockup--footer .brand-mark img {
+	@apply size-[78%] object-contain;
 }
-html[data-theme='forest'] .group:hover .brand-pill,
-html[data-theme='forest'] .group:focus-visible .brand-pill {
-	@apply border-primary/45 bg-base-300/70;
+.brand-lockup--footer .brand-lockup__text {
+	@apply text-lg;
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion — the site currently has none of this. Kill everything
+   non-essential, keep the layout identical.
+--------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	.caret::after {
+		opacity: 1;
+	}
+
+	.boot > * {
+		animation: none;
+	}
+}
+
+/* ---------------------------------------------------------------------------
+   Print — the resume is meant to be handed to people.
+--------------------------------------------------------------------------- */
+@media print {
+	/* `:root[data-theme]` ties the (0,2,0) specificity of the dark-theme block
+	   above and wins on source order. Plain `:root` is (0,1,0) and loses to it,
+	   which printed the resume as pale grey on white for every dark-mode reader. */
+	:root,
+	:root[data-theme] {
+		--bg: #ffffff;
+		--surface: #ffffff;
+		--surface-2: #ffffff;
+		--ink: #000000;
+		--muted: #333333;
+		--line: #bbbbbb;
+		--accent: #000000;
+		--shadow: none;
+	}
+
+	[data-print='hide'] {
+		display: none !important;
+	}
+
+	body {
+		background: #fff;
+		color: #000;
+		font-size: 10.5pt;
+	}
+
+	main {
+		padding: 0 !important;
+	}
+
+	.container {
+		max-width: none;
+		padding-inline: 0;
+	}
+
+	/* Keep an entry whole rather than splitting it across a page break. */
+	[data-print='keep'] {
+		break-inside: avoid;
+		page-break-inside: avoid;
+	}
+
+	/* Paper has no hyperlinks — spell the destination out. */
+	[data-print='expand-link']::after {
+		content: ' (' attr(href) ')';
+		font-size: 9pt;
+		color: #444;
+		word-break: break-all;
+	}
+
+	a {
+		text-decoration: none;
+		color: #000;
+	}
 }

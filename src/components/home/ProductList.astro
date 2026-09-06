@@ -1,0 +1,33 @@
+---
+/**
+ * `ls ./products` — the live apps as a directory listing.
+ *
+ * Reads the catalog rather than restating it: the old version hardcoded all
+ * four products in markup that had already drifted from the data.
+ */
+import Prompt from '../ui/Prompt.astro';
+import Row from '../ui/Row.astro';
+import { getProductsSorted } from '../../data/products-catalog';
+import { hrefForLocale, t, toLocale } from '../../i18n';
+
+const loc = toLocale(Astro.currentLocale);
+const products = getProductsSorted();
+---
+
+<Prompt cmd={t(loc, 'cmd.products')} heading={t(loc, 'products.heading')} id="products">
+	<p class="prose-measure pt-1 text-sm text-muted">{t(loc, 'home.productsLead')}</p>
+</Prompt>
+
+<div class="mt-5 border-t border-line">
+	{
+		products.map((p) => (
+			<Row
+				href={hrefForLocale(loc, `products/${p.slug}`)}
+				name={p.id}
+				title={p.title[loc]}
+				desc={p.summary[loc]}
+				meta={p.prodUrl ? new URL(p.prodUrl).hostname : undefined}
+			/>
+		))
+	}
+</div>

@@ -1,0 +1,49 @@
+---
+import { getCollection, render } from 'astro:content';
+import NextSteps from '../ui/NextSteps.astro';
+import Panel from '../ui/Panel.astro';
+import Prompt from '../ui/Prompt.astro';
+import { t, toLocale } from '../../i18n';
+
+const loc = toLocale(Astro.currentLocale);
+
+const entries = await getCollection('now');
+const entry = entries.find((e) => e.id.startsWith(`${loc}/`));
+if (!entry) throw new Error(`Missing 'now' entry for locale '${loc}'`);
+
+const { Content } = await render(entry);
+
+const updated = entry.data.updated;
+const formatted = updated.toLocaleDateString(loc === 'en' ? 'en-GB' : 'th-TH', {
+	year: 'numeric',
+	month: 'long',
+	day: 'numeric',
+});
+
+/** Surface staleness rather than hiding it — that is the whole point of a /now page. */
+const monthsOld = (Date.now() - updated.getTime()) / (1000 * 60 * 60 * 24 * 30);
+const isStale = monthsOld > 4;
+---
+
+<div class="space-y-12">
+	<Panel label={`dolity ~/${loc}/now`}>
+		<Prompt cmd={t(loc, 'cmd.now')} heading={t(loc, 'now.heading')} level={1}>
+			<p class="pt-2 font-mono text-xs text-muted">
+				{t(loc, 'now.updated')}: <time datetime={updated.toISOString()}>{formatted}</time>
+				{isStale && <span class="text-accent"> · {t(loc, 'now.stale')}</span>}
+			</p>
+
+			<div class="now-prose prose-measure space-y-4 pt-4 text-ink">
+				<Content />
+			</div>
+		</Prompt>
+	</Panel>
+
+	<NextSteps sections={['home', 'uses', 'products', 'resume']} />
+</div>
+
+<style>
+	.now-prose :global(p) {
+		line-height: 1.75;
+	}
+</style>

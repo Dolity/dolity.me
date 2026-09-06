@@ -1,336 +1,337 @@
-export const ui = {
-	th: {
-		'site.name': 'Dolity',
-		'nav.home': 'หน้าแรก',
-		'nav.about': 'เกี่ยวกับ',
-		'nav.resume': 'เรซูเม่',
-		'nav.expertise': 'Tech stack',
-		'nav.products': 'ผลิตภัณฑ์',
-		'nav.support': 'สนับสนุน',
-		'nav.menu': 'เปิดเมนู',
-		'nav.langSwitch': 'English',
-		'theme.light': 'โหมดสว่าง',
-		'theme.dark': 'โหมดมืด',
-		'footer.tagline': 'เครื่องมือและบริการดิจิทัลจาก Dolity',
-		'footer.products': 'ผลิตภัณฑ์',
-		'footer.shorturl': 'ย่อลิงก์ (Short URL)',
-		'footer.bill': 'ใบแจ้งหนี้ / บิล (Bill)',
-		'footer.support': 'สนับสนุน / โดเนท',
-		'home.hero.titlePrefix': 'สวัสดี เราคือ',
-		'home.hero.titleBrand': 'Dolity',
-		'home.hero.sub':
-			'เราชอบสร้างเว็บและเครื่องมือที่เน้นใช้งานจริง กดปุ๊บ ใช้ได้ปั๊บ และต้องใช้งานง่าย! หน้านี้คือพื้นที่รวบรวมเรซูเม่และทุกโปรเจกต์ที่เราตั้งใจปั้นขึ้นมาไว้ในที่เดียว ถ้าสนใจ ลองคลิกเข้าไปเล่นดูได้เลย',
-		'home.hero.ctaResume': 'ดูเรซูเม่',
-		'home.hero.ctaProducts': 'ผลิตภัณฑ์',
-		'home.hero.ctaAbout': 'ที่มาของเรา',
-		'home.hero.ctaSupport': 'ฝากสนับสนุน',
-		'home.trust.item1.title': 'โหลดไว ใช้สบายบนมือถือ',
-		'home.trust.item1.body':
-			'เราไม่ชอบเว็บหนัก ๆ เหมือนกัน เลยพยายามให้หน้าเบาและกดแล้วไม่ค้างนาน',
-		'home.trust.item2.title': 'โครงสร้างไม่งง',
-		'home.trust.item2.body':
-			'โดเมนหลักกับโดเมนย่อยแยกกันชัด กดไปแล้วเจอบริการจริง ไม่ต้องเดาเองว่าปุ่มนี้พาไปไหน',
-		'home.trust.item3.title': 'พัฒนาต่อได้',
-		'home.trust.item3.body':
-			'ถ้ามีคนใช้มากขึ้นก็รองรับได้ เพราะออกแบบมาให้ต่อยอด และยังมีคนดูแลโค้ดอยู่เรื่อย ๆ',
-		'home.trust.listLabel': 'สั้น ๆ ว่าพยายามทำอะไรบ้าง',
-		'home.products.eyebrow': 'ของที่เปิดให้ใช้แล้ว',
-		'home.products.heading': 'ผลิตภัณฑ์',
-		'home.products.lead':
-			'ผลิตภัณฑ์และโปรเจกต์หลายชิ้นรวมไว้ในหน้าเดียว กดไปลองใช้บนโดเมนย่อยได้เลย หรืออ่านทั้งรายละเอียดกับ tech stack ในหน้าผลิตภัณฑ์ก่อนก็ได้',
-		'home.products.cardLearn': 'อ่านสรุปในหน้านี้',
-		'home.ctaBand.title': 'อยากรู้จักเพิ่ม หรืออยากช่วยเป็นกำลังใจให้เรา',
-		'home.ctaBand.sub':
-			'มีหน้าเล่าที่มาแบบไม่เป็นทางการมาก ถ้าอยากสนับสนุนหรือทักมาคุย แยกไว้เป็นหน้าเดียวให้แล้ว',
-		'home.ctaBand.about': 'รู้จัก Dolity',
-		'home.ctaBand.support': 'ช่องทางสนับสนุน',
-		'card.shorturl.title': 'Yorbo — ย่อลิงก์ & QR',
-		'card.shorturl.desc':
-			'Yorbo คือบริการย่อลิงก์บน shorturl.dolity.me — สร้างลิงก์สั้นและ QR ได้เร็ว มีแดชบอร์ดดูสถิติการคลิก ประวัติและการค้นหาลิงก์ รองรับทั้งไทยและอังกฤษ เหมาะทั้งแชร์ทั่วไปและใช้งานจริงในโปรเจกต์',
-		'card.shorturl.cta': 'ไปที่บริการ',
-		'card.bill.title': 'Hanbo — หารบิล (Bill splitter)',
-		'card.bill.desc':
-			'Hanbo ช่วยหารบิลออนไลน์ที่ bill.dolity.me — สร้างบิลหน้าเดียว แยกยอดต่อคน สแกนใบเสร็จเพื่อดึงรายการด้วย OCR สร้าง QR PromptPay แจ้งเตือนเมื่อมีคนจ่าย และรองรับ Service Charge / VAT เมื่อต้องหารแบบครบวงจร',
-		'card.bill.cta': 'ไปที่บริการ',
-		'card.phiboon.title': 'Phiboon Tour (ภิบูรณ์ทัวร์)',
-		'card.phiboon.desc':
-			'เว็บไซต์โปรโมตบริการรถตู้ สายอุดรธานี–กรุงเทพ–ชลบุรี–ระยอง รองรับผู้โดยสาร ขนส่งมอเตอร์ไซค์ และขนส่งสินค้า',
-		'card.phiboon.cta': 'ไปที่เว็บไซต์',
-		'card.dolity.title': 'Dolity',
-		'card.dolity.desc':
-			'เว็บหลักแบรนด์ Dolity รวมเรซูเม่ แคตตาล็อกผลิตภัณฑ์ หน้าเกี่ยวกับ และช่องสนับสนุน — โหลดเร็ว รองรับสองภาษา',
-		'card.dolity.cta': 'เข้าเว็บหลัก',
-		'about.title': 'เกี่ยวกับเรา',
-		'about.pageEyebrow': 'จากโดโด้',
-		'about.heroPrefix': 'เรื่องของ',
-		'about.heroBrand': 'Dolity',
-		'about.lead':
-			'โดโด้เล่าเรื่อง dolity.me — เว็บเล็ก ๆ ที่รวมเครื่องมือบนเน็ตที่ลงมือทำเอง',
-		'about.intro':
-			'สวัสดี เราชื่อโดโด้ เป็นเด็กเรียนสายคอมจากไทยที่ชอบสร้างนู่นสร้างนี่ และอยากมีพื้นที่เล็ก ๆ บนอินเทอร์เน็ตเป็นของตัวเอง',
-		'about.secHubTitle': 'dolity.me คืออะไร',
-		'about.hub':
-			'dolity.me คือที่รวมเว็บแอปแนวยูทิลิตี้ที่เราตั้งใจปั้นขึ้นมา — พูดง่าย ๆ ว่าเป็นศูนย์กลางให้โปรเจกต์พวกนี้อยู่ที่เดียว',
-		'about.secGoalsTitle': 'เป้าหมายที่วางไว้',
-		'about.goals':
-			'เราอยากทำเครื่องมือที่คนทั่วโลกเข้าถึงได้ ใช้งานง่าย ไม่ซับซ้อน และ UX/UI เป็นมิตรที่สุดเท่าที่ฝีมือจะไหว (กำลังฝึกอยู่ 555)',
-		'about.secHeartTitle': 'ทำไมถึงยังทำอยู่',
-		'about.heart':
-			'แน่นอนว่ารันทั้งระบบมีต้นทุนอยู่บ้าง แต่เราทำเพราะใจรักล้วน ๆ มองว่ามันคือพื้นที่ให้ได้เรียนรู้ ลองเทคโนโลยีใหม่ ๆ และที่สำคัญคือมีความสุขทุกทีที่เห็นคนเอาไปใช้',
-		'about.ctaNavLabel': 'ลิงก์ต่อจากหน้านี้',
-		'about.ctaPrompt': 'อยากดูของเล่นต่อ? เลือกได้จากนี้เลย',
-		'about.sectionsEyebrow': 'เบื้องหลังเพิ่มเติม',
-		'about.sectionsHeading': 'เรื่องราวและทิศทาง',
-		'about.ctaBand.title': 'ต่อจากหน้านี้ไปไหนต่อ?',
-		'about.ctaBand.sub':
-			'ลิงก์ไปหน้าแรก ผลิตภัณฑ์ เรซูเม่ และสนับสนุน — สไตล์ปุ่มแบบเดียวกับหน้าแรก',
-		'resume.title': 'เรซูเม่',
-		'resume.lead':
-			'สรุปประสบการณ์การทำงาน ประวัติการศึกษา เกียรติบัตร และโปรเจกต์ — ไทม์ไลน์ฉบับเต็มดูได้ที่ LinkedIn',
-		'resume.displayName': 'จักรกฤษณ์ ฝ่ายจำปา (โดโด้)',
-		'resume.headline':
-			'Software Engineer | Vue.js, Node.js | Full-Stack Web Development',
-		'resume.summary':
-			'สวัสดีครับ เรียกผมโดโด้ได้ — ผมทำงานเป็น Software Engineer โดยเน้น scalable backend และ full-stack development: server-side logic ที่เสถียร ระบบ real-time แบบ event-driven และเว็บ responsive เพื่อประสบการณ์ผู้ใช้ที่ลื่นไหล ในงานปัจจุบันรับผิดชอบพัฒนาและดูแล RESTful API บน Express.js (Sequelize/MySQL) คู่กับ microservices ใน Golang (Echo) รวมระบบ payment และ KYC พร้อม webhooks เพื่อ sync ข้อมูลอย่างปลอดภัย ใช้ WebSockets, Redis (pub/sub), Bee-Queue และ cron สำหรับ background jobs และฟีเจอร์แบบสด ตรวจสอบสุขภาพระบบและ deploy ผ่าน Kubernetes (kubectl) และพัฒนา internal CRM dashboard บน Vue.js ecosystem นอกเหนืองานประจำ ผมสนใจศึกษาและลงมือทำ full-stack side projects แบบ self-hosted (เช่น bill splitter, URL shortener) บน VPS หรือ home server บน Linux และนำ AI-assisted workflows กับ prompt engineering / agent orchestration มาช่วยวางแผนและเร่ง development lifecycle',
-		'resume.linkedinCta': 'LinkedIn',
-		'resume.linkedinAria': 'LinkedIn ของจักรกฤษณ์ ฝ่ายจำปา (เปิดในแท็บใหม่)',
-		'resume.githubCta': 'GitHub',
-		'resume.githubAria': 'GitHub profile ของจักรกฤษณ์ ฝ่ายจำปา (เปิดในแท็บใหม่)',
-		'resume.profilePhotoAlt': 'รูปโปรไฟล์ จักรกฤษณ์ ฝ่ายจำปา',
-		'resume.expertiseLink': 'ไปที่ส่วน Tech stack',
-		'resume.heroEyebrow': 'โปรไฟล์',
-		'resume.expertiseEyebrow': 'ความเชี่ยวชาญ',
-		'resume.expEyebrow': 'ไทม์ไลน์',
-		'resume.eduEyebrow': 'การศึกษา',
-		'resume.certEyebrow': 'เกียรติบัตร',
-		'resume.projEyebrow': 'ผลงาน',
-		'resume.ctaBand.title': 'อยากดูบริการหรือสนับสนุนต่อ?',
-		'resume.ctaBand.sub':
-			'หน้าแคตตาล็อกผลิตภัณฑ์กับช่องสนับสนุนออกแบบให้สัมผัสเดียวกับหน้าแรก',
-		'resume.ctaBand.products': 'ผลิตภัณฑ์',
-		'resume.ctaBand.support': 'สนับสนุน',
-		'resume.experience': 'ประสบการณ์การทำงาน',
-		'resume.education': 'ประวัติการศึกษา',
-		'resume.certifications': 'เกียรติบัตร',
-		'resume.verifyCredential': 'ตรวจสอบ credential กับผู้ออก',
-		'resume.projects': 'Projects',
-		'products.index.title': 'ผลิตภัณฑ์',
-		'products.index.lead':
-			'สรุปโปรเจกต์ของ Dolity แต่ละตัวทำอะไรได้บ้าง ใช้ tech stack อะไร และลิงก์ไปเว็บจริง — รวม Yorbo, Hanbo, Phiboon Tour และเว็บหลัก Dolity',
-		'products.catalog.sectionEyebrow': 'ดูลึกรายละเอียด',
-		'products.catalog.sectionHeading': 'แต่ละโปรเจกต์',
-		'products.catalog.sectionLead':
-			'จุดเด่น tech stack และลิงก์ไปยังเซอร์วิสจริง — เรียงตามลำดับที่โฟกัสอยู่',
-		'products.catalog.highlightsHeading': 'ความสามารถหลัก',
-		'products.catalog.techHeading': 'Tech stack',
-		'products.catalog.openSite': 'เปิดเว็บไซต์',
-		'products.catalog.detailPage': 'หน้ารายละเอียด',
-		'products.shorturl.title': 'Short URL — shorturl.dolity.me',
-		'products.shorturl.desc':
-			'บริการย่อลิงก์เพื่อแชร์ลิงก์สั้นลง ใช้งานง่าย เหมาะกับการแคมเปญและการแชร์ทั่วไป',
-		'products.shorturl.outbound': 'เปิด shorturl.dolity.me',
-		'products.billing.title': 'Bill — bill.dolity.me',
-		'products.billing.desc':
-			'บริการด้านบิลและใบแจ้งหนี้ ออกแบบให้ใช้งานบนเว็บได้สะดวก',
-		'products.billing.outbound': 'เปิด bill.dolity.me',
-		'products.back': '← กลับไปหน้ารวมผลิตภัณฑ์',
-		'products.viewInCatalog': 'สรุปพร้อม tech stack ในแคตตาล็อก',
-		'support.title': 'สนับสนุน Dolity',
-		'support.pageEyebrow': 'ขอบคุณที่แวะมา',
-		'support.heroPrefix': 'ช่วยให้เราทำต่อได้อีกนิด',
-		'support.lead':
-			'อยากช่วยค่าโดเมนหรือค่าเซิร์ฟ อยากส่งกำลังใจ หรือแค่อยากทักทาย — รวมช่องทางไว้หน้านี้ให้ครบ ไม่ต้องไล่หาเอง',
-		'support.intro':
-			'เว็บย่อยหรือหน้าในโปรเจกต์อื่นลิงก์มาที่นี่ได้ เพราะเราอยากให้รู้ทางโดเนทและติดต่อโดยไม่ต้องเดา',
-		'support.sectionEyebrow': 'เลือกทางที่สะดวก',
-		'support.sectionHeading': 'โดเนทหรือทักมาคุย',
-		'support.sectionLead':
-			'สแกนจ่ายผ่าน Buy Me a Coffee ได้เลย หรือจะอีเมลมาคุยก็ยินดี',
-		'support.bmc.title': 'Buy Me a Coffee',
-		'support.bmc.desc':
-			'โอนผ่านบัตรหรือช่องทางที่ Buy Me a Coffee รองรับ — กดแล้วจะไปหน้าชำระเงินของพวกเขา (ออกจาก dolity.me)',
-		'support.bmc.cta': 'ไปที่ buymeacoffee.com/dolity',
-		'support.bmc.imgAlt': 'QR สแกนไปยืนยันการสนับสนุนผ่าน Buy Me a Coffee — dolity',
-		'support.email.title': 'อีเมล',
-		'support.email.desc': 'ขอฟีเจอร์ ถามงานบริการ หรือทักมาฟีดแบ็กได้ตลอด',
-		'support.email.cta': 'เขียนอีเมล',
-		'support.detail.title': 'เรื่องสั้น ๆ ก่อนติดต่อ',
-		'support.detail.intro':
-			'เงินสนับสนุนหรือคำติชมที่ตรงประเด็นช่วยให้เรามั่นใจว่าเว็บและบริการจะยังใช้ได้จริงและไม่ทิ้งผู้ใช้',
-		'support.detail.body':
-			'ทักมาเมื่อไหร่ก็ได้ — จะขอฟีเจอร์ สงสัยเรื่องเว็บ หรือกังวลเรื่องความปลอดภัย/การใช้ข้อมูล เราอ่านและตอบ',
-		'support.ctaBand.title': 'อยากดูที่อื่นในเว็บต่อไหม?',
-		'support.ctaBand.sub': 'หน้าแรก ผลิตภัณฑ์ เรซูเม่ หรือเรื่องราวเกี่ยวกับเรา — เลือกจากปุ่มด้านล่าง',
-		'support.ctaNavLabel': 'ไปหน้าอื่นในเว็บ',
-	},
-	en: {
-		'site.name': 'Dolity',
-		'nav.home': 'Home',
-		'nav.about': 'About',
-		'nav.resume': 'Resume',
-		'nav.expertise': 'Tech stack',
-		'nav.products': 'Products',
-		'nav.support': 'Support',
-		'nav.menu': 'Menu',
-		'nav.langSwitch': 'ไทย',
-		'theme.light': 'Light mode',
-		'theme.dark': 'Dark mode',
-		'footer.tagline': 'Digital tools and services by Dolity',
-		'footer.products': 'Products',
-		'footer.shorturl': 'Short URL',
-		'footer.bill': 'Bill / invoicing',
-		'footer.support': 'Support / donate',
-		'home.hero.titlePrefix': 'Hi — this is',
-		'home.hero.titleBrand': 'Dolity',
-		'home.hero.sub':
-			'We build small web things we actually want to use: quick to load, straight to the point, no oversized promises. This site holds the resume and links out to the apps on our subdomains—click around if you like.',
-		'home.hero.ctaResume': 'View resume',
-		'home.hero.ctaProducts': 'Products',
-		'home.hero.ctaAbout': 'How we got here',
-		'home.hero.ctaSupport': 'Support us',
-		'home.trust.item1.title': 'Keeps pages light',
-		'home.trust.item1.body':
-			'Nobody likes a sluggish site. We try to ship lean pages that feel fine on phones and desktops.',
-		'home.trust.item2.title': 'Straightforward paths',
-		'home.trust.item2.body':
-			'Main domain versus subdomains is intentional—links take you to real services, not a guessing game.',
-		'home.trust.item3.title': 'Room to grow',
-		'home.trust.item3.body':
-			'If more people show up, the stack can stretch. We also keep maintaining the codebase instead of abandoning it.',
-		'home.trust.listLabel': 'What we care about',
-		'home.products.eyebrow': 'Live tools',
-		'home.products.heading': 'Products',
-		'home.products.lead':
-			'Multiple products live across our domains—try them directly or read the full breakdown with tech stacks on the products page.',
-		'home.products.cardLearn': 'Read the overview',
-		'home.ctaBand.title': 'Want the backstory—or to pitch in?',
-		'home.ctaBand.sub':
-			'There is an about page that reads like a human wrote it. Support lives on one page if you want to help out or just say hi.',
-		'home.ctaBand.about': 'Meet Dolity',
-		'home.ctaBand.support': 'Support & contact',
-		'card.shorturl.title': 'Yorbo — short links & QR',
-		'card.shorturl.desc':
-			'Yorbo is the URL shortener at shorturl.dolity.me—short links and QR codes, analytics, searchable link history, and a Thai/English UI for everyday sharing or lightweight campaign use.',
-		'card.shorturl.cta': 'Open service',
-		'card.bill.title': 'Hanbo — bill splitter',
-		'card.bill.desc':
-			'Hanbo splits group tabs at bill.dolity.me—single-page bills, per-person lines, receipt OCR, PromptPay QR codes, push reminders, and optional service charge/VAT when the math gets fiddly.',
-		'card.bill.cta': 'Open service',
-		'card.phiboon.title': 'Phiboon Tour',
-		'card.phiboon.desc':
-			'Landing site for van routes across Udon Thani, Bangkok, Chonburi, and Rayong—passenger, bike, and cargo.',
-		'card.phiboon.cta': 'Open website',
-		'card.dolity.title': 'Dolity',
-		'card.dolity.desc':
-			'The main Dolity site: resume, product catalog, about, and support—fast, bilingual, Cloudflare-hosted.',
-		'card.dolity.cta': 'Open site',
-		'about.title': 'About',
-		'about.pageEyebrow': 'From Dodo',
-		'about.heroPrefix': 'The story behind',
-		'about.heroBrand': 'Dolity',
-		'about.lead':
-			'Dodo on dolity.me—a small home on the web for utility apps built and maintained by hand.',
-		'about.intro':
-			"Hey—I'm Dodo, a CS student in Thailand who likes tinkering with side projects and wanted a little corner of the internet that actually feels mine.",
-		'about.secHubTitle': 'What dolity.me is',
-		'about.hub':
-			'dolity.me is the hub for utility-style web apps I deliberately put together—one place to gather those projects instead of scattering them everywhere.',
-		'about.secGoalsTitle': "What I'm aiming for",
-		'about.goals':
-			'Tools that stay reachable for people everywhere, easy to use, not overcomplicated, and as friendly as the UX/UI can get with the skills I have (still leveling up, haha).',
-		'about.secHeartTitle': 'Why it keeps going',
-		'about.heart':
-			"Running all of this costs something, sure, but it's mostly love. It's space to learn, try new tech, and honestly it makes my day when someone finds what I made useful.",
-		'about.ctaNavLabel': 'Where to next',
-		'about.ctaPrompt': 'If you want to wander further, these are the obvious next stops:',
-		'about.sectionsEyebrow': 'More context',
-		'about.sectionsHeading': 'Story and direction',
-		'about.ctaBand.title': 'Where would you like to go next?',
-		'about.ctaBand.sub':
-			'Jump to home, products, resume, or support—the same button styling as the landing page.',
-		'resume.title': 'Resume',
-		'resume.lead':
-			'Work experience, education, certifications, and projects — full timeline on LinkedIn.',
-		'resume.displayName': 'Jakkrit Faijampa (Dodo)',
-		'resume.headline':
-			'Software Engineer | Vue.js, Node.js | Full-Stack Web Development',
-		'resume.summary':
-			"Hi — you can call me Dodo. I'm a Software Engineer focused on scalable backend engineering and full-stack delivery: dependable server-side logic, real-time event-driven systems, and responsive interfaces with polished UX. Today I build and maintain RESTful APIs on Express.js (Sequelize/MySQL) alongside Golang (Echo) microservices, own payment and KYC integrations with reliable webhooks for secure, event-driven sync, and ship real-time and background workflows with WebSockets, Redis (pub/sub), Bee-Queue, and cron jobs. I monitor service health and deployments with Kubernetes (kubectl) and enhance internal CRM dashboards on Vue.js. Beyond my day job I keep exploring systems, self-host full-stack projects such as bill splitters and URL shorteners on VPS or home Linux servers, and apply AI-assisted workflows plus prompt engineering and light agent orchestration to plan and accelerate delivery.",
-		'resume.linkedinCta': 'LinkedIn',		'resume.linkedinAria': "Jakkrit Faijampa's LinkedIn profile (opens in a new tab)",
-		'resume.githubCta': 'GitHub',
-		'resume.githubAria': "Jakkrit Faijampa's GitHub profile (opens in a new tab)",
-		'resume.profilePhotoAlt': 'Profile photo of Jakkrit Faijampa',
-		'resume.expertiseLink': 'Tech stack',
-		'resume.heroEyebrow': 'Professional profile',
-		'resume.expertiseEyebrow': 'Core stack',
-		'resume.expEyebrow': 'Timeline',
-		'resume.eduEyebrow': 'Education',
-		'resume.certEyebrow': 'Credentials',
-		'resume.projEyebrow': 'Portfolio',
-		'resume.ctaBand.title': 'Want to browse products or chip in?',
-		'resume.ctaBand.sub': 'The product catalog and support hub mirror the home page CTA band.',
-		'resume.ctaBand.products': 'Products',
-		'resume.ctaBand.support': 'Support',
-		'resume.experience': 'Experience',
-		'resume.education': 'Education',
-		'resume.certifications': 'Certifications',
-		'resume.verifyCredential': 'Verify with issuer',
-		'resume.projects': 'Projects',
-		'products.index.title': 'Products',
-		'products.index.lead':
-			'What each Dolity project does, the tech stack behind it, and links to production—covering Yorbo, Hanbo, Phiboon Tour, and the main Dolity site.',
-		'products.catalog.sectionEyebrow': 'Go deeper',
-		'products.catalog.sectionHeading': 'Every project',
-		'products.catalog.sectionLead':
-			'Highlights, stacks, and production links—in the order we are actively shipping and maintaining.',
-		'products.catalog.highlightsHeading': 'Highlights',
-		'products.catalog.techHeading': 'Tech stack',
-		'products.catalog.openSite': 'Open website',
-		'products.catalog.detailPage': 'Detail page',
-		'products.shorturl.title': 'Short URL — shorturl.dolity.me',
-		'products.shorturl.desc':
-			'A short-link service for campaigns and everyday sharing.',
-		'products.shorturl.outbound': 'Open shorturl.dolity.me',
-		'products.billing.title': 'Bill — bill.dolity.me',
-		'products.billing.desc': 'Invoicing-oriented flows hosted on bill.dolity.me.',
-		'products.billing.outbound': 'Open bill.dolity.me',
-		'products.back': '← Back to products',
-		'products.viewInCatalog': 'Summary & tech stack in catalog',
-		'support.title': 'Support Dolity',
-		'support.pageEyebrow': 'Thanks for being here',
-		'support.heroPrefix': 'Help us keep shipping',
-		'support.lead':
-			'Chip in for domains or servers, cheer us on, or just say hi—everything lives on this page so you do not have to hunt for links.',
-		'support.intro':
-			'Side projects and subdomains may link here on purpose, so you always know how to donate or reach us.',
-		'support.sectionEyebrow': 'Pick what suits you',
-		'support.sectionHeading': 'Donate or drop a line',
-		'support.sectionLead': 'Scan to tip through Buy Me a Coffee, or email us—both are welcome.',
-		'support.bmc.title': 'Buy Me a Coffee',
-		'support.bmc.desc':
-			'Pay by card or whatever Buy Me a Coffee supports—you will leave dolity.me for their checkout.',
-		'support.bmc.cta': 'Open buymeacoffee.com/dolity',
-		'support.bmc.imgAlt': 'QR code to support dolity via Buy Me a Coffee',
-		'support.email.title': 'Email',
-		'support.email.desc': 'Feature ideas, service questions, or casual feedback—send it anytime.',
-		'support.email.cta': 'Compose email',
-		'support.detail.title': 'Before you reach out',
-		'support.detail.intro':
-			'Tips and honest feedback help us keep tools useful and dependable instead of walking away from them.',
-		'support.detail.body':
-			'Email whenever you like—new ideas, questions, or worries about what our sites do with data. We read and reply.',
-		'support.ctaBand.title': 'Want to explore the rest of the site?',
-		'support.ctaBand.sub':
-			'Home, products, resume, or the about page—same button styling as the other landing sections.',
-		'support.ctaNavLabel': 'Other pages on the site',
-	},
+/**
+ * Every user-facing string on the site.
+ *
+ * Voice: first person singular — ผม / I. This is one person's site, so "เรา/we"
+ * would be a company that does not exist.
+ *
+ * `th` is the source of truth: it is `as const`, so its keys define `UiKey`.
+ * `en` is typed against those keys, which makes a missing or renamed English
+ * string a build failure instead of a silent fallback to Thai.
+ *
+ * Keys under `cmd.*` are the machine's voice — shell commands rendered in mono.
+ * They are identical in both locales on purpose: a command is not translated.
+ */
+
+const th = {
+	'site.name': 'Dolity',
+	'site.tagline': 'เว็บและเครื่องมือที่ผมสร้างเอง แล้วก็ใช้เองด้วย',
+
+	// Navigation
+	'nav.home': 'หน้าแรก',
+	'nav.about': 'เกี่ยวกับผม',
+	'nav.resume': 'เรซูเม่',
+	'nav.products': 'ผลงาน',
+	'nav.uses': 'ของที่ใช้',
+	'nav.now': 'ตอนนี้',
+	'nav.support': 'สนับสนุน',
+	'nav.close': 'ปิด',
+	'nav.langSwitch': 'English',
+	'nav.langSwitchAria': 'อ่านหน้านี้เป็นภาษาอังกฤษ',
+	'nav.skip': 'ข้ามไปที่เนื้อหา',
+
+	// Theme
+	'theme.toggle': 'สลับโหมดสีสว่าง/มืด',
+
+	// Command palette
+	'palette.open': 'ค้นหาและข้ามไปหน้าอื่น',
+	'palette.title': 'ไปที่ไหนดี',
+	'palette.placeholder': 'พิมพ์ชื่อหน้าหรือชื่อผลงาน…',
+	'palette.pages': 'หน้าในเว็บ',
+	'palette.products': 'ผลงาน',
+	'palette.empty': 'ไม่เจออะไรเลย ลองพิมพ์สั้นลงดูไหม',
+	'palette.hint': '↑↓ เลื่อน · Enter เปิด · Esc ปิด',
+
+	// Consent
+	'consent.text':
+		'เว็บนี้ใช้คุกกี้เพื่อเก็บสถิติการเข้าชมแบบไม่ระบุตัวตน ไม่มีโฆษณา ไม่มีการขายข้อมูล',
+	'consent.accept': 'ยอมรับ',
+	'consent.reject': 'ไม่ยอมรับ',
+	'consent.aria': 'ตัวเลือกความยินยอมเรื่องคุกกี้',
+
+	// The machine's voice — not translated
+	'cmd.whoami': 'whoami',
+	'cmd.products': 'ls ./products',
+	'cmd.about': 'cat about.md',
+	'cmd.summary': 'head -3 resume.md',
+	'cmd.experience': 'git log --author=dodo',
+	'cmd.education': 'cat education.md',
+	'cmd.certs': 'ls ./certificates',
+	'cmd.stack': 'cat stack.json',
+	'cmd.projects': 'ls ./projects',
+	'cmd.uses': 'cat .config',
+	'cmd.now': 'cat now.md',
+	'cmd.support': 'cat support.md',
+	'cmd.detail': 'cat README.md',
+	'cmd.next': 'cd ..',
+	'cmd.notFound': 'cat 404.md',
+
+	// Home
+	'home.lead':
+		'ผมชื่อโดโด้ เป็น Software Engineer อยู่ขอนแก่น ทำระบบหลังบ้านเป็นหลัก แล้วก็ปั้นเว็บเล็ก ๆ ของตัวเองไว้ใช้จริงอีกหลายตัว — หน้านี้รวมเรซูเม่กับทุกอย่างที่ผมทำไว้ที่เดียว',
+	'home.name': 'จักรกฤษณ์ ฝ่ายจำปา (โดโด้)',
+	'home.role': 'Software Engineer · Woxa Group · ขอนแก่น',
+	'home.pitch': 'ทำระบบหลังบ้านให้ไม่ล่ม และทำเว็บให้คนใช้แล้วไม่ต้องคิดเยอะ',
+	'home.ctaResume': 'ดูเรซูเม่',
+	'home.ctaProducts': 'ดูงานที่ทำ',
+	'home.productsLead': 'ทุกตัวเปิดใช้จริงอยู่ กดเข้าไปลองได้เลย ไม่ต้องสมัครอะไร',
+
+	// Shared "where to next" band
+	'next.title': 'ไปต่อที่ไหนดี',
+
+	// About
+	'about.title': 'เกี่ยวกับผม',
+	'about.lead':
+		'โดโด้ — Software Engineer จากขอนแก่น เล่าว่า dolity.me คืออะไร และทำไมถึงยังทำมันอยู่',
+	'about.p1':
+		'ผมชื่อจักรกฤษณ์ ฝ่ายจำปา เรียกโดโด้ก็ได้ครับ จบวิทยาการคอมพิวเตอร์จาก ม.มหาสารคาม ปี 2567 แล้วก็ทำงานเป็น Software Engineer ที่ Woxa Group มาตั้งแต่เมษายนปีนั้นเลย',
+	'about.p2':
+		'งานประจำผมอยู่ฝั่งหลังบ้านเป็นหลัก — API, ระบบจ่ายเงิน, งานที่ต้องรันเบื้องหลัง, ของที่พังไม่ได้ พอกลับบ้านผมก็ยังชอบเขียนโค้ดอยู่ดี เลยกลายเป็นว่ามีโปรเจกต์ของตัวเองงอกมาเรื่อย ๆ',
+	'about.p3':
+		'dolity.me คือที่ที่ผมเอาของพวกนั้นมารวมไว้ ทุกตัวรันอยู่จริงบนโดเมนย่อยของเว็บนี้ ผมดูแลมันเองทั้งหมด ตั้งแต่โค้ดยันเซิร์ฟ',
+	'about.p4':
+		'ทำไมยังทำอยู่ทั้งที่มีค่าเซิร์ฟทุกเดือน? ตอบตรง ๆ คือมันสนุก ได้ลองของใหม่ ได้พังเอง ได้แก้เอง แล้วเวลามีคนทักมาบอกว่าเอาไปใช้แล้วสะดวกดี วันนั้นก็คุ้มแล้ว',
+
+	// Resume
+	'resume.title': 'เรซูเม่',
+	'resume.lead':
+		'ประสบการณ์ทำงาน การศึกษา เกียรติบัตร และผลงานของจักรกฤษณ์ ฝ่ายจำปา — Software Engineer สาย backend และ full-stack',
+	'resume.name': 'จักรกฤษณ์ ฝ่ายจำปา',
+	'resume.headline': 'Software Engineer · Backend & Full-Stack',
+	'resume.location': 'ขอนแก่น, ประเทศไทย',
+	'resume.summary':
+		'ผมทำ backend เป็นหลัก — REST API, ระบบจ่ายเงินและ KYC, งาน real-time และงานเบื้องหลังที่ต้องรันตรงเวลา และดูแลมันตอนขึ้น production ด้วย ส่วนฝั่งหน้าบ้านผมทำ dashboard ภายในด้วย Vue และปั้นเว็บของตัวเองด้วย Astro กับ Next.js',
+	'resume.summaryExtra':
+		'นอกเวลางานผมเอาโปรเจกต์ตัวเองไป self-host บน VPS และเครื่องที่บ้าน เลยได้แตะตั้งแต่เขียนโค้ดจนถึง deploy จริง',
+	'resume.print': 'พิมพ์ / บันทึกเป็น PDF',
+	'resume.printAria': 'พิมพ์เรซูเม่หน้านี้ หรือบันทึกเป็นไฟล์ PDF',
+	'resume.linkedinCta': 'LinkedIn',
+	'resume.linkedinAria': 'LinkedIn ของจักรกฤษณ์ ฝ่ายจำปา (เปิดในแท็บใหม่)',
+	'resume.githubCta': 'GitHub',
+	'resume.githubAria': 'GitHub ของจักรกฤษณ์ ฝ่ายจำปา (เปิดในแท็บใหม่)',
+	'resume.emailCta': 'อีเมล',
+	'resume.emailAria': 'ส่งอีเมลหาจักรกฤษณ์ ฝ่ายจำปา',
+	'resume.photoAlt': 'รูปโปรไฟล์ จักรกฤษณ์ ฝ่ายจำปา',
+	'resume.experience': 'ประสบการณ์ทำงาน',
+	'resume.education': 'การศึกษา',
+	'resume.certifications': 'เกียรติบัตร',
+	'resume.projects': 'ผลงาน',
+	'resume.stack': 'เครื่องมือที่ใช้ได้',
+	'resume.verifyCredential': 'ตรวจสอบกับผู้ออก',
+	'resume.credentialId': 'รหัส',
+	'resume.projectsLead': 'รายละเอียดเต็มของแต่ละตัวอยู่ในหน้าผลงาน',
+
+	// Products
+	'products.title': 'ผลงาน',
+	'products.lead':
+		'ผลงานทั้งหมดของ Dolity — Yorbo (ย่อลิงก์), Hanbo (หารบิล), Phiboon Tour และตัวเว็บนี้เอง พร้อมรายละเอียดว่าแต่ละตัวทำอะไรและใช้อะไรสร้าง',
+	'products.heading': 'ของที่เปิดใช้จริงแล้ว',
+	'products.sectionLead': 'เรียงตามตัวที่ผมลงแรงกับมันมากที่สุดตอนนี้',
+	'products.highlights': 'ทำอะไรได้บ้าง',
+	'products.tech': 'สร้างด้วย',
+	'products.openSite': 'เปิดเว็บ',
+	'products.detail': 'อ่านรายละเอียด',
+	'products.back': 'กลับไปหน้าผลงาน',
+
+	// Uses
+	'uses.title': 'ของที่ใช้',
+	'uses.lead': 'เครื่องมือ ภาษา และบริการที่ผมใช้ทำงานจริงทุกวัน',
+	'uses.heading': 'โต๊ะทำงานของผม',
+	'uses.sectionLead':
+		'ไม่ใช่ลิสต์ของที่อยากได้ อันนี้คือของที่เปิดใช้อยู่จริง ๆ ตอนนี้ ถ้าเปลี่ยนเมื่อไหร่จะมาแก้',
+	'uses.stackHeading': 'ภาษาและเฟรมเวิร์ก',
+
+	// Now
+	'now.title': 'ตอนนี้ทำอะไรอยู่',
+	'now.lead': 'สรุปสั้น ๆ ว่าช่วงนี้ผมกำลังโฟกัสอะไรอยู่',
+	'now.heading': 'ช่วงนี้',
+	'now.updated': 'อัปเดตล่าสุด',
+	'now.stale': 'หน้านี้ไม่ได้อัปเดตมาสักพักแล้ว',
+
+	// Support
+	'support.title': 'สนับสนุน',
+	'support.lead': 'อยากช่วยค่าเซิร์ฟ อยากส่งกำลังใจ หรือแค่อยากทัก — ช่องทางอยู่หน้านี้',
+	'support.sectionLead':
+		'เว็บกับเซิร์ฟมีค่าใช้จ่ายอยู่บ้าง แต่ไม่ต้องรู้สึกว่าต้องจ่ายนะครับ ทักมาคุยเฉย ๆ ผมก็ดีใจแล้ว',
+	'support.bmc.title': 'Buy Me a Coffee',
+	'support.bmc.desc': 'จ่ายผ่านบัตรได้เลย กดแล้วจะพาไปหน้าชำระเงินของเขา (ออกจาก dolity.me)',
+	'support.bmc.cta': 'ไปที่ Buy Me a Coffee',
+	'support.bmc.imgAlt': 'QR code สำหรับสนับสนุน dolity ผ่าน Buy Me a Coffee',
+	'support.bmc.scan': 'หรือสแกน QR นี้',
+	'support.email.title': 'อีเมล',
+	'support.email.desc': 'อยากขอฟีเจอร์ เจอบั๊ก หรืออยากชวนคุยงาน ส่งมาได้เลย ผมอ่านทุกฉบับ',
+	'support.email.cta': 'เขียนอีเมล',
+	'support.email.subject': 'ทักจาก dolity.me',
+
+	// 404
+	'notfound.title': 'ไม่เจอหน้านี้',
+	'notfound.heading': 'ไม่เจอหน้านี้',
+	'notfound.lead': 'หน้าที่คุณเปิดไม่มีอยู่ หรือย้ายไปแล้ว ลองเริ่มใหม่จากลิงก์ข้างล่างนี้',
+
+	// Footer
+	'footer.pages': 'หน้าในเว็บ',
+	'footer.products': 'ผลงาน',
+	'footer.elsewhere': 'ที่อื่น',
+	'footer.builtWith': 'สร้างด้วย Astro · โฮสต์บน Cloudflare',
+	'footer.external': 'เปิดในแท็บใหม่',
 } as const;
+
+const en: Record<keyof typeof th, string> = {
+	'site.name': 'Dolity',
+	'site.tagline': 'Web things I build, and then actually use.',
+
+	'nav.home': 'Home',
+	'nav.about': 'About',
+	'nav.resume': 'Resume',
+	'nav.products': 'Work',
+	'nav.uses': 'Uses',
+	'nav.now': 'Now',
+	'nav.support': 'Support',
+	'nav.close': 'Close',
+	'nav.langSwitch': 'ไทย',
+	'nav.langSwitchAria': 'Read this page in Thai',
+	'nav.skip': 'Skip to content',
+
+	'theme.toggle': 'Switch between light and dark',
+
+	'palette.open': 'Search and jump to a page',
+	'palette.title': 'Go to',
+	'palette.placeholder': 'Type a page or project name…',
+	'palette.pages': 'Pages',
+	'palette.products': 'Work',
+	'palette.empty': 'Nothing matched. Try a shorter word.',
+	'palette.hint': '↑↓ move · Enter open · Esc close',
+
+	'consent.text':
+		'This site uses cookies for anonymous visit statistics. No ads, no data selling.',
+	'consent.accept': 'Accept',
+	'consent.reject': 'Decline',
+	'consent.aria': 'Cookie consent choices',
+
+	'cmd.whoami': 'whoami',
+	'cmd.products': 'ls ./products',
+	'cmd.about': 'cat about.md',
+	'cmd.summary': 'head -3 resume.md',
+	'cmd.experience': 'git log --author=dodo',
+	'cmd.education': 'cat education.md',
+	'cmd.certs': 'ls ./certificates',
+	'cmd.stack': 'cat stack.json',
+	'cmd.projects': 'ls ./projects',
+	'cmd.uses': 'cat .config',
+	'cmd.now': 'cat now.md',
+	'cmd.support': 'cat support.md',
+	'cmd.detail': 'cat README.md',
+	'cmd.next': 'cd ..',
+	'cmd.notFound': 'cat 404.md',
+
+	'home.lead':
+		"I'm Dodo, a software engineer in Khon Kaen. I work on backends by day and build small web tools the rest of the time. This site is my resume plus everything I've made, in one place.",
+	'home.name': 'Jakkrit Faijampa (Dodo)',
+	'home.role': 'Software Engineer · Woxa Group · Khon Kaen',
+	'home.pitch': 'I build backends that stay up, and interfaces that need no explaining.',
+	'home.ctaResume': 'Read the resume',
+	'home.ctaProducts': 'See the work',
+	'home.productsLead': 'All of these are live right now. Click in and try them — no sign-up.',
+
+	'next.title': 'Where to next',
+
+	'about.title': 'About',
+	'about.lead':
+		'Dodo — a software engineer in Khon Kaen — on what dolity.me is and why it keeps going.',
+	'about.p1':
+		"I'm Jakkrit Faijampa; Dodo is easier. I finished a computer science degree at Mahasarakham University in 2024 and started as a software engineer at Woxa Group that April.",
+	'about.p2':
+		"My day job is mostly backend — APIs, payment flows, background jobs, the parts that are not allowed to fall over. I still want to write code when I get home, so side projects keep appearing.",
+	'about.p3':
+		'dolity.me is where I keep them. Each one runs for real on a subdomain of this site, and I look after all of it myself — code, servers, the lot.',
+	'about.p4':
+		"Why keep paying for servers to run them? Because it's fun. I get to try things, break them, and fix them. And when someone tells me they actually used one, that pays for the month.",
+
+	'resume.title': 'Resume',
+	'resume.lead':
+		'Experience, education, certifications, and projects for Jakkrit Faijampa — a backend-leaning full-stack software engineer.',
+	'resume.name': 'Jakkrit Faijampa',
+	'resume.headline': 'Software Engineer · Backend & Full-Stack',
+	'resume.location': 'Khon Kaen, Thailand',
+	'resume.summary':
+		'I work on backends: REST APIs, payment and KYC integrations, real-time features, and scheduled jobs that have to run on time — and I look after them in production. On the front end I build internal dashboards in Vue and my own sites in Astro and Next.js.',
+	'resume.summaryExtra':
+		'Outside work I self-host my own projects on a VPS and a machine at home, so I own everything from the first commit to the deploy.',
+	'resume.print': 'Print / save as PDF',
+	'resume.printAria': 'Print this resume or save it as a PDF',
+	'resume.linkedinCta': 'LinkedIn',
+	'resume.linkedinAria': "Jakkrit Faijampa's LinkedIn profile (opens in a new tab)",
+	'resume.githubCta': 'GitHub',
+	'resume.githubAria': "Jakkrit Faijampa's GitHub profile (opens in a new tab)",
+	'resume.emailCta': 'Email',
+	'resume.emailAria': 'Email Jakkrit Faijampa',
+	'resume.photoAlt': 'Profile photo of Jakkrit Faijampa',
+	'resume.experience': 'Experience',
+	'resume.education': 'Education',
+	'resume.certifications': 'Certifications',
+	'resume.projects': 'Projects',
+	'resume.stack': 'What I work with',
+	'resume.verifyCredential': 'Verify with issuer',
+	'resume.credentialId': 'ID',
+	'resume.projectsLead': 'The full write-up for each one lives on the work page.',
+
+	'products.title': 'Work',
+	'products.lead':
+		'Everything Dolity runs — Yorbo (short links), Hanbo (bill splitting), Phiboon Tour, and this site — with what each one does and what it is built from.',
+	'products.heading': 'Live and in use',
+	'products.sectionLead': 'Ordered by how much of my attention each one has right now.',
+	'products.highlights': 'What it does',
+	'products.tech': 'Built with',
+	'products.openSite': 'Open site',
+	'products.detail': 'Read more',
+	'products.back': 'Back to work',
+
+	'uses.title': 'Uses',
+	'uses.lead': 'The tools, languages, and services I actually work in every day.',
+	'uses.heading': 'My desk',
+	'uses.sectionLead':
+		"Not a wishlist. This is what is open on my machine right now, and I'll edit it when that changes.",
+	'uses.stackHeading': 'Languages and frameworks',
+
+	'now.title': 'What I am doing now',
+	'now.lead': 'A short note on what I am focused on at the moment.',
+	'now.heading': 'Right now',
+	'now.updated': 'Last updated',
+	'now.stale': 'This page has not been updated in a while.',
+
+	'support.title': 'Support',
+	'support.lead':
+		'Help with the server bill, send a bit of encouragement, or just say hi — it all starts here.',
+	'support.sectionLead':
+		"The domains and servers do cost something, but please don't feel you have to chip in. A message on its own makes my day.",
+	'support.bmc.title': 'Buy Me a Coffee',
+	'support.bmc.desc': "Pay by card. The button takes you to their checkout, away from dolity.me.",
+	'support.bmc.cta': 'Open Buy Me a Coffee',
+	'support.bmc.imgAlt': 'QR code to support dolity through Buy Me a Coffee',
+	'support.bmc.scan': 'Or scan this',
+	'support.email.title': 'Email',
+	'support.email.desc':
+		'Feature requests, bugs you hit, or work you want to talk about — send it over. I read all of it.',
+	'support.email.cta': 'Write an email',
+	'support.email.subject': 'Hello from dolity.me',
+
+	'notfound.title': 'Page not found',
+	'notfound.heading': 'Page not found',
+	'notfound.lead': 'The page you opened does not exist, or it moved. Pick up again from one of these.',
+
+	'footer.pages': 'Pages',
+	'footer.products': 'Work',
+	'footer.elsewhere': 'Elsewhere',
+	'footer.builtWith': 'Built with Astro · hosted on Cloudflare',
+	'footer.external': 'opens in a new tab',
+};
+
+export const ui = { th, en };
 
 export type LocaleCode = keyof typeof ui;
 
-export type UiKey = keyof (typeof ui)['th'];
+export type UiKey = keyof typeof th;
 
 export function t(locale: string, key: UiKey): string {
-	const l = locale === 'en' ? 'en' : 'th';
+	const l: LocaleCode = locale === 'en' ? 'en' : 'th';
 	return ui[l][key] ?? key;
 }

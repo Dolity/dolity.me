@@ -1,20 +1,18 @@
 /**
- * Resume tech stack section — bilingual headings + Simple Icons slugs where available.
+ * Resume tech stack section — bilingual headings + tech badges.
+ * @see ./tech-icons for the `slug` values a badge may use.
  */
 import type { TechBadge } from './products-catalog';
 
-export type Locale = 'th' | 'en';
+import type { Locale } from '../i18n/path-utils';
+
+export type { Locale };
 
 export type ResumeExpertiseSection = {
 	id: string;
 	heading: Record<Locale, string>;
 	notes?: Record<Locale, string>;
 	tech: TechBadge[];
-};
-
-export const resumeExpertiseTitle: Record<Locale, string> = {
-	th: 'ความสามารถหลักและ Tech stack',
-	en: 'Core competencies & tech stack',
 };
 
 const sections: ResumeExpertiseSection[] = [
@@ -24,7 +22,7 @@ const sections: ResumeExpertiseSection[] = [
 		tech: [
 			{ slug: 'nodedotjs', label: 'Node.js' },
 			{ slug: 'express', label: 'Express.js' },
-			{ slug: 'go', label: 'Golang (Echo)' },
+			{ slug: 'go', label: 'Go (Echo)' },
 		],
 	},
 	{
@@ -32,7 +30,7 @@ const sections: ResumeExpertiseSection[] = [
 		heading: { th: 'Architecture & integrations', en: 'Architecture & integrations' },
 		tech: [
 			{ slug: 'redis', label: 'Redis' },
-			{ slug: 'socketdotio', label: 'WebSockets' },
+			{ slug: 'socketdotio', label: 'WebSockets (Socket.IO)' },
 			{ label: 'Webhooks' },
 			{ label: 'Bee-Queue' },
 			{ label: 'cron' },
@@ -47,7 +45,7 @@ const sections: ResumeExpertiseSection[] = [
 			{ label: 'Vuex' },
 			{ slug: 'react', label: 'React' },
 			{ slug: 'tailwindcss', label: 'Tailwind CSS' },
-			{ slug: 'getbootstrap', label: 'Bootstrap' },
+			{ slug: 'bootstrap', label: 'Bootstrap' },
 		],
 	},
 	{

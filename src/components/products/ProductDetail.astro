@@ -1,0 +1,82 @@
+---
+/**
+ * One product, on its own page. Replaces four hand-written page files that
+ * carried inline markup and had already drifted from the catalog.
+ */
+import TechStackRow from './TechStackRow.astro';
+import Button from '../ui/Button.astro';
+import NextSteps from '../ui/NextSteps.astro';
+import Panel from '../ui/Panel.astro';
+import Prompt from '../ui/Prompt.astro';
+import type { ProductCatalogItem } from '../../data/products-catalog';
+import { hrefForLocale, t, type Locale } from '../../i18n';
+
+interface Props {
+	item: ProductCatalogItem;
+	loc: Locale;
+}
+
+const { item, loc } = Astro.props;
+const host = item.prodUrl ? new URL(item.prodUrl).hostname : null;
+---
+
+<div class="space-y-12">
+	<Panel label={`dolity ~/${loc}/products/${item.slug}`}>
+		<Prompt cmd={t(loc, 'cmd.detail')} level={1}>
+			<div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 pt-1">
+				<h1 class="text-2xl font-semibold tracking-tight text-ink sm:text-3xl">
+					{item.title[loc]}
+				</h1>
+				<span class="font-mono text-xs text-muted">{item.period[loc]}</span>
+			</div>
+
+			<p class="prose-measure pt-3 text-ink">{item.summary[loc]}</p>
+
+			<div class="flex flex-wrap gap-2 pt-5">
+				{
+					item.prodUrl && (
+						<Button
+							href={item.prodUrl}
+							variant="primary"
+							external
+							gaEvent="select_content"
+							gaParams={{
+								content_type: 'product_site',
+								content_id: item.slug,
+								link_location: 'product_detail',
+							}}
+						>
+							{host ?? t(loc, 'products.openSite')}
+						</Button>
+					)
+				}
+				<Button href={hrefForLocale(loc, 'products')}>{t(loc, 'products.back')}</Button>
+			</div>
+		</Prompt>
+	</Panel>
+
+	<section>
+		<h2 class="font-mono text-xs uppercase text-muted">{t(loc, 'products.highlights')}</h2>
+		<ul class="mt-3 border-t border-line">
+			{
+				item.highlights[loc].map((line) => (
+					<li class="flex gap-3 border-b border-line px-2 py-3 text-sm leading-relaxed text-ink">
+						<span class="font-mono text-accent" aria-hidden="true">
+							–
+						</span>
+						<span>{line}</span>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+
+	<section>
+		<h2 class="font-mono text-xs uppercase text-muted">{t(loc, 'products.tech')}</h2>
+		<div class="mt-3">
+			<TechStackRow items={item.tech} />
+		</div>
+	</section>
+
+	<NextSteps sections={['products', 'resume', 'about', 'support']} />
+</div>

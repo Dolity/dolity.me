@@ -1,0 +1,78 @@
+---
+/**
+ * Consent Mode v2. Rendered hidden and revealed on `astro:page-load` only when
+ * no choice is stored, so a returning visitor never sees it flash.
+ *
+ * The default state is set in BaseLayout's inline head script, before gtag
+ * loads — this component only records the visitor's answer.
+ */
+import SiteContainer from './SiteContainer.astro';
+import { t, toLocale } from '../../i18n';
+
+const loc = toLocale(Astro.currentLocale);
+---
+
+<div
+	id="dolity-consent"
+	hidden
+	role="region"
+	aria-label={t(loc, 'consent.aria')}
+	class="fixed inset-x-0 bottom-0 z-50 border-t border-line bg-surface"
+	data-print="hide"
+>
+	<SiteContainer class="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between">
+		<p class="text-sm text-muted">{t(loc, 'consent.text')}</p>
+		<div class="flex shrink-0 gap-2">
+			<button
+				type="button"
+				data-consent="denied"
+				class="rounded-md border border-line bg-surface px-3 py-1.5 text-sm font-medium text-ink transition-colors duration-150 hover:border-accent hover:text-accent"
+			>
+				{t(loc, 'consent.reject')}
+			</button>
+			<button
+				type="button"
+				data-consent="granted"
+				class="rounded-md border border-accent bg-accent px-3 py-1.5 text-sm font-medium text-accent-ink transition-opacity duration-150 hover:opacity-90"
+			>
+				{t(loc, 'consent.accept')}
+			</button>
+		</div>
+	</SiteContainer>
+</div>
+
+<script>
+	import { CONSENT_STORAGE_KEY } from '../../constants/consent';
+	import { setAnalyticsConsent } from '../../lib/analytics';
+
+	function stored(): string | null {
+		try {
+			return localStorage.getItem(CONSENT_STORAGE_KEY);
+		} catch {
+			return null;
+		}
+	}
+
+	// Delegated from `document` and re-queried each time, so the banner survives
+	// a view transition swapping the element out.
+	document.addEventListener('click', (ev) => {
+		const target = ev.target;
+		if (!(target instanceof Element)) return;
+		const button = target.closest<HTMLElement>('[data-consent]');
+		const choice = button?.dataset.consent;
+		if (choice !== 'granted' && choice !== 'denied') return;
+
+		setAnalyticsConsent(choice);
+		try {
+			localStorage.setItem(CONSENT_STORAGE_KEY, choice);
+		} catch {
+			/* blocked storage — the choice holds for this page load only */
+		}
+		document.getElementById('dolity-consent')?.setAttribute('hidden', '');
+	});
+
+	document.addEventListener('astro:page-load', () => {
+		const el = document.getElementById('dolity-consent');
+		if (el && stored() === null) el.hidden = false;
+	});
+</script>

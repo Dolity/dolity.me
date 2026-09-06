@@ -1,0 +1,33 @@
+---
+/**
+ * `$ <command>` followed by a heading — the machine announcing what comes next.
+ *
+ * This replaces the eyebrow-label-above-every-heading pattern the old site
+ * inlined everywhere: the command says what the section *is*, so it carries
+ * information rather than decorating the heading.
+ */
+interface Props {
+	cmd: string;
+	heading?: string;
+	id?: string;
+	level?: 1 | 2 | 3;
+	class?: string;
+}
+
+const { cmd, heading, id, level = 2, class: className } = Astro.props;
+const Heading = `h${level}` as 'h1' | 'h2' | 'h3';
+const headingSize =
+	level === 1 ? 'text-2xl sm:text-3xl' : level === 2 ? 'text-xl sm:text-2xl' : 'text-lg';
+---
+
+<div class:list={['space-y-2', className]}>
+	<p class="prompt-line text-muted">{cmd}</p>
+	{
+		heading && (
+			<Heading id={id} class:list={['font-semibold tracking-tight text-ink', headingSize]}>
+				{heading}
+			</Heading>
+		)
+	}
+	<slot />
+</div>

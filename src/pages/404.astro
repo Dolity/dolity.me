@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../components/layout/BaseLayout.astro';
+import Panel from '../components/ui/Panel.astro';
+import Prompt from '../components/ui/Prompt.astro';
+import NextSteps from '../components/ui/NextSteps.astro';
+import { t, toLocale } from '../i18n';
+
+/**
+ * Rendered on demand, not prerendered: Cloudflare falls back to the Worker when
+ * no static asset matches, so this route is reached without depending on the
+ * `not_found_handling` asset setting.
+ */
+export const prerender = false;
+
+// Read the locale the same way every other component does. Deriving it from the
+// pathname here instead would localize this copy while the header, footer, and
+// palette — which all call toLocale(Astro.currentLocale) themselves — stayed put.
+const loc = toLocale(Astro.currentLocale);
+
+Astro.response.status = 404;
+---
+
+<BaseLayout
+	title={t(loc, 'notfound.title')}
+	description={t(loc, 'notfound.lead')}
+	noindex
+>
+	<div class="space-y-12">
+		<Panel label="dolity ~/404">
+			<Prompt cmd={t(loc, 'cmd.notFound')} heading={t(loc, 'notfound.heading')} level={1}>
+				<p class="prose-measure pt-2 text-ink">{t(loc, 'notfound.lead')}</p>
+			</Prompt>
+		</Panel>
+
+		<NextSteps sections={['home', 'products', 'resume']} />
+	</div>
+</BaseLayout>

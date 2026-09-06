@@ -1,18 +1,30 @@
 ---
-import ProductsCatalog from './ProductsCatalog.astro';
-import ProductsCtaBand from './ProductsCtaBand.astro';
-import ProductsHero from './ProductsHero.astro';
-import type { Locale } from '../../data/products-catalog';
+import ProductCard from './ProductCard.astro';
+import NextSteps from '../ui/NextSteps.astro';
+import Panel from '../ui/Panel.astro';
+import Prompt from '../ui/Prompt.astro';
+import { getProductsSorted } from '../../data/products-catalog';
+import { t, type Locale } from '../../i18n';
 
 interface Props {
 	loc: Locale;
 }
 
 const { loc } = Astro.props;
+const products = getProductsSorted();
 ---
 
-<div class="space-y-12 lg:space-y-16">
-	<ProductsHero />
-	<ProductsCatalog loc={loc} />
-	<ProductsCtaBand />
+<div class="space-y-12">
+	<Panel label={`dolity ~/${loc}/products`}>
+		<Prompt cmd={t(loc, 'cmd.products')} heading={t(loc, 'products.title')} level={1}>
+			<p class="prose-measure pt-2 text-ink">{t(loc, 'products.lead')}</p>
+			<p class="prose-measure pt-2 text-sm text-muted">{t(loc, 'products.sectionLead')}</p>
+		</Prompt>
+	</Panel>
+
+	<div>
+		{products.map((item) => <ProductCard item={item} loc={loc} headingLevel={2} />)}
+	</div>
+
+	<NextSteps sections={['resume', 'about', 'uses', 'support']} />
 </div>

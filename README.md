@@ -5,7 +5,7 @@ Dolity’s main marketing and portfolio site: a bilingual hub for resumes, produ
 ## What this project is
 
 - A **public-facing site** at [dolity.me](https://dolity.me) that introduces Dolity, lists products with tech summaries, and routes visitors to dedicated apps where those products actually run.
-- A **content surface** for the resume (`/resume`, `/en/resume`), about page, product detail pages, and a support / donation page.
+- A **content surface** for the resume (`/th/resume`, `/en/resume`), about, work catalog and per-product pages, `/uses`, `/now`, and a support page.
 - An **i18n site**: Thai is the default locale at the root path; English lives under `/en/…`.
 
 ## What it is used for
@@ -20,10 +20,9 @@ Dolity’s main marketing and portfolio site: a bilingual hub for resumes, produ
 | Area | Technology |
 | --- | --- |
 | Framework | [Astro](https://astro.build) 6.x (islands / static-first) |
-| Styling | [Tailwind CSS](https://tailwindcss.com) 4.x + [@tailwindcss/vite](https://tailwindcss.com/docs/installation) |
-| UI | [DaisyUI](https://daisyui.com) 5.x |
+| Styling | [Tailwind CSS](https://tailwindcss.com) 4.x (CSS-first, own design tokens — no component library) |
 | i18n | Astro built-in i18n (`th` default, `en` prefixed) |
-| Fonts | [IBM Plex Sans Thai](https://fontsource.org/fonts/ibm-plex-sans-thai) (Fontsource) |
+| Fonts | [IBM Plex Sans Thai](https://fontsource.org/fonts/ibm-plex-sans-thai) + [IBM Plex Mono](https://fontsource.org/fonts/ibm-plex-mono) (Fontsource) |
 | Deploy / runtime | [Cloudflare](https://developers.cloudflare.com/) via [`@astrojs/cloudflare`](https://docs.astro.build/en/guides/integrations-guide/cloudflare/) |
 | Tooling | [Bun](https://bun.sh) (package manager & scripts), [TypeScript](https://www.typescriptlang.org/), [Wrangler](https://developers.cloudflare.com/workers/wrangler/) |
 | Quality | [`astro check`](https://docs.astro.build/en/guides/typescript/) (@astrojs/check) |
@@ -42,22 +41,24 @@ Run from the project root:
 | --- | --- |
 | `bun install` | Install dependencies |
 | `bun dev` | Dev server (default [localhost:4321](http://localhost:4321)) |
-| `bun build` | Production build to `./dist/` |
-| `bun preview` | Build then preview locally |
+| `bun run build` | Production build to `./dist/` |
+| `bun run preview` | Build then preview locally |
 | `bun run check` | Typecheck and diagnostics (`astro check`) |
 | `bun run deploy` | Build and deploy with Wrangler |
-| `bun run generate-types` / `bun run cf-typegen` | Generate Cloudflare types (`wrangler types`) |
+| `bun run cf-typegen` | Generate Cloudflare types (`wrangler types`) |
 
 ## Project layout (high level)
 
 ```text
 src/
-  components/     # UI (layout, home, products, resume, …)
-  pages/          # Routes (Thai at root, English under en/)
-  content/        # Markdown etc. (resume / collections as configured)
-  i18n/           # Strings and path helpers
-  data/           # Product catalog and similar data
-  styles/         # global.css (Tailwind + DaisyUI)
+  components/ui/  # Panel, Prompt, Row, Button, NextSteps, CommandPalette
+  components/     # layout + one folder per page section
+  pages/th|en/    # Route shells; both locales, same shape
+  content/        # experience, education, certifications, now (locale in path)
+  i18n/           # strings.ts (all copy), NAV_SECTIONS, path helpers
+  data/           # products catalog, tech stack, workbench
+  lib/            # client-side: GA delegation, command palette, theme
+  styles/         # global.css — design tokens, terminal vernacular, print
 public/           # Static assets (favicons, logos, manifest)
 ```
 
